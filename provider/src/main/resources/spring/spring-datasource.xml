@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- 加载资源配置 -->
+    <context:property-placeholder location="classpath:jdbc.properties,classpath:default.properties"/>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxActive" value="${jdbc.maxActive}"/>
+        <property name="maxIdle" value="${jdbc.maxIdle}"/>
+        <property name="maxWait" value="${jdbc.maxWait}"/>
+        <property name="defaultAutoCommit" value="${jdbc.defaultAutoCommit}"/>
+        <property name="validationQuery" value="select 1"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+        <!-- 开启Druid的监控统计功能 -->
+        <property name="filters" value="log4j"/>
+        <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter"/>
+                <ref bean="wall-filter"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <property name="slowSqlMillis" value="200" />
+        <property name="logSlowSql" value="true" />
+        <property name="mergeSql" value="true" />
+    </bean>
+
+    <bean id="wall-filter-config" class="com.alibaba.druid.wall.WallConfig" init-method="init">
+        <property name="dir" value="META-INF/druid/wall/mysql" />
+        <property name="selectWhereAlwaysTrueCheck" value="false" />
+        <property name="selectHavingAlwaysTrueCheck" value="false" />
+    </bean>
+
+    <bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
+        <property name="dbType" value="mysql" />
+        <property name="config" ref="wall-filter-config" />
+    </bean>
+
+    <!-- 创建JdbcTemplate-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <!-- 创建SqlSessionFactory -->
+    <!--<bean id="sqlSessionFactory" name="sqlSessionFactory"-->
+    <!--class="org.mybatis.spring.SqlSessionFactoryBean">-->
+    <!--<property name="dataSource" ref="dataSource"/>-->
+    <!--<property name="configLocation" value="classpath:mybatis-config.xml"/>-->
+    <!--</bean>-->
+
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+    <!--<property name="basePackage" value="com.vinci.backend.user.dao"/>-->
+    <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
+    <!--</bean>-->
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>
