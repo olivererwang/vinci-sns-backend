@@ -1,6 +1,6 @@
 package com.vinci.common.base.exception;
 
-public class BizException extends Exception {
+public class BizException extends RuntimeException {
 
     private static final long serialVersionUID = -504955880063536901L;
 

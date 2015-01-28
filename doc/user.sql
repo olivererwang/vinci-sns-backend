@@ -7,6 +7,8 @@ create table `device` (
   `imei` varchar(64) NOT NULL COMMENT '设备唯一id',
   `mac_addr` VARCHAR(64) NOT NULL COMMENT '设备wifi mac地址',
   `userid` varchar(64) NOT NULL DEFAULT '' COMMENT '反查用的userid',
+  `create_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '此次操作的时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_mac_addr_device_id` (`mac_addr`,`imei`),
   INDEX `idx_userid` (`userid`)
