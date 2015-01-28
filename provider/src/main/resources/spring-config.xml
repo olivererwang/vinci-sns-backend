@@ -25,6 +25,7 @@
     <!--<util:properties id="app" location="classpath:app.properties"/>-->
 
     <!-- Imports user-defined @Controller beans that process client requests -->
+    <import resource="classpath:spring/spring-bean.xml"/>
     <import resource="classpath:spring/spring-web.xml"/>
     <import resource="classpath:spring/spring-datasource.xml"/>
 
