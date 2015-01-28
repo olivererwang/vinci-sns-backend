@@ -22,8 +22,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.vinci.common.base.monitor.muti.AbstractQunarMutiMonitor;
 import com.vinci.common.base.monitor.muti.QunarMutiLongMonitor;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import com.vinci.common.base.monitor.util.SystemTimer;
 
@@ -55,7 +55,9 @@ public class QMonitor {
 			.newScheduledThreadPool(1, new ThreadFactory() {
 				@Override
 				public Thread newThread(Runnable r) {
-					return new Thread(r, "QMonitor-monitor-task");
+					Thread t = new Thread(r, "QMonitor-monitor-task");
+					t.setDaemon(true);
+					return t;
 				}
 
 			});

@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
+import com.google.common.collect.Maps;
 
 /**
  * 按path的请求分布状态
@@ -23,11 +23,10 @@ public class RequestStats {
     /**
      * 存储按path为key的日访问情况
      */
-    protected static final ConcurrentMap<String, ConcurrentMap<String, AtomicInteger>> counterMap = new ConcurrentLinkedHashMap.Builder<String, ConcurrentMap<String, AtomicInteger>>()
-            .maximumWeightedCapacity(200).build();
+    protected static final ConcurrentMap<String, ConcurrentMap<String, AtomicInteger>> counterMap = Maps.newConcurrentMap();
 
-    private static final ConcurrentMap<String, PathStatsCounter> pathStatsCounterMap = new ConcurrentLinkedHashMap.Builder<String, PathStatsCounter>()
-            .maximumWeightedCapacity(2000).build();
+    private static final ConcurrentMap<String, PathStatsCounter> pathStatsCounterMap = Maps.newConcurrentMap();
+
     private static final Lock lock = new ReentrantLock();
     private static final Lock lockMap = new ReentrantLock();
     private static final Lock pathStatsCounterMapLock = new ReentrantLock();
@@ -50,8 +49,7 @@ public class RequestStats {
             try {
                 todayMap = counterMap.get(time);
                 if (todayMap == null) {
-                    todayMap = new ConcurrentLinkedHashMap.Builder<String, AtomicInteger>().maximumWeightedCapacity(
-                            10000).build();
+                    todayMap = Maps.newConcurrentMap();
                     counterMap.putIfAbsent(time, todayMap);
                 }
             } finally {
@@ -176,13 +174,13 @@ public class RequestStats {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append("\r\n\tSLOWREQEUSTLESS5:" + SLOWREQEUSTLESS5.get());
-            sb.append("\r\n\tSLOWREQEUSTLESS10:" + SLOWREQEUSTLESS10.get());
-            sb.append("\r\n\tSLOWREQEUSTLESS20:" + SLOWREQEUSTLESS20.get());
-            sb.append("\r\n\tSLOWREQEUSTLESS50:" + SLOWREQEUSTLESS50.get());
-            sb.append("\r\n\tSLOWREQEUSTLESS100:" + SLOWREQEUSTLESS100.get());
-            sb.append("\r\n\tSLOWREQEUSTLESS1000:" + SLOWREQEUSTLESS1000.get());
-            sb.append("\r\n\tSLOWREQEUSTMORE1000:" + SLOWREQEUSTMORE1000.get());
+            sb.append("\r\n\tSLOWREQEUSTLESS5:").append(SLOWREQEUSTLESS5.get());
+            sb.append("\r\n\tSLOWREQEUSTLESS10:").append(SLOWREQEUSTLESS10.get());
+            sb.append("\r\n\tSLOWREQEUSTLESS20:").append(SLOWREQEUSTLESS20.get());
+            sb.append("\r\n\tSLOWREQEUSTLESS50:").append(SLOWREQEUSTLESS50.get());
+            sb.append("\r\n\tSLOWREQEUSTLESS100:").append(SLOWREQEUSTLESS100.get());
+            sb.append("\r\n\tSLOWREQEUSTLESS1000:").append(SLOWREQEUSTLESS1000.get());
+            sb.append("\r\n\tSLOWREQEUSTMORE1000:").append(SLOWREQEUSTMORE1000.get());
             return sb.toString();
         }
 
@@ -217,7 +215,6 @@ public class RequestStats {
                 return;
             }
             SLOWREQEUSTMORE1000.incrementAndGet();
-            return;
         }
     }
 }

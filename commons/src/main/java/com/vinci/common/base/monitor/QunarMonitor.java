@@ -44,13 +44,24 @@ public class QunarMonitor {
             .getLastmonthvaluemap();
     private static final ConcurrentSkipListMap<String, Monitor> computerMonitors = MonitorContainer
             .getComputermonitors();
-    private static final ScheduledExecutorService periodService = Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService periodService = Executors.newScheduledThreadPool(1,
+            new ThreadFactory() {
+                @Override
+                public Thread newThread(Runnable r) {
+                    Thread t =  new Thread(r, "thread-monitor-avg-compute-task");
+                    t.setDaemon(true);
+                    return t;
+                }
+
+            });
 
     private static final ScheduledExecutorService threadMonitorScheduler = Executors.newScheduledThreadPool(1,
             new ThreadFactory() {
                 @Override
                 public Thread newThread(Runnable r) {
-                    return new Thread(r, "thread-monitor-task");
+                    Thread t =  new Thread(r, "thread-monitor-task");
+                    t.setDaemon(true);
+                    return t;
                 }
 
             });

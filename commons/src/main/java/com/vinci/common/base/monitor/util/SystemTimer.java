@@ -6,9 +6,10 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 /**
  * 缓存系统时间，避免每次调用System.currentTimeMillis()消耗系统资源。适用于高并发、对时间精度要求不高的场景
@@ -18,7 +19,16 @@ import org.apache.commons.lang.time.FastDateFormat;
  * @version $Id: SystemTimer.java 9565 2012-12-05 08:03:43Z build $
  */
 public class SystemTimer {
-    private final static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private final static ScheduledExecutorService executor =  Executors.newScheduledThreadPool(1,
+            new ThreadFactory() {
+                @Override
+                public Thread newThread(Runnable r) {
+                    Thread t = new Thread(r, "thread-system-timer-task");
+                    t.setDaemon(true);
+                    return t;
+                }
+
+            });
     /**
      * 更新间隔
      */

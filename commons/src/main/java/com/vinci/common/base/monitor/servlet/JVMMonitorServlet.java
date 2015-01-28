@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.vinci.common.base.monitor.JVMMonitor;
 import com.vinci.common.base.monitor.util.RequestUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author sunli

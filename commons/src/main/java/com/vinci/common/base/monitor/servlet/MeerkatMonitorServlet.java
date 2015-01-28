@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.vinci.common.base.monitor.QunarMonitor;
 import com.vinci.common.base.monitor.util.RequestUtil;
 import com.vinci.common.base.monitor.util.StringUtil;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * @author sunli

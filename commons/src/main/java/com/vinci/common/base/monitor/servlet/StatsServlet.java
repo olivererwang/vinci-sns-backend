@@ -21,7 +21,7 @@ import com.vinci.common.base.monitor.util.RequestStats;
 import com.vinci.common.base.monitor.util.RequestUtil;
 import com.vinci.common.base.monitor.util.StringUtil;
 import com.vinci.common.base.monitor.util.SystemStats;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.vinci.common.base.monitor.util.CPUMonitor;
 import com.vinci.common.base.monitor.util.SystemTimer;
