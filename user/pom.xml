@@ -14,5 +14,24 @@
     <artifactId>sns-server.user</artifactId>
     <packaging>jar</packaging>
 
-    
+    <dependencies>
+        <dependency>
+            <groupId>com.vinci</groupId>
+            <artifactId>sns-server.commons</artifactId>
+        </dependency>
+
+        <!-- test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+        </dependency>
+    </dependencies>
 </project>
