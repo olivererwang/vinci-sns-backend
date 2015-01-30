@@ -44,6 +44,7 @@ public class UserModel implements Serializable{
         public String toString() {
             return JsonUtils.encode(this);
         }
+
     }
 
     public long getId() {
