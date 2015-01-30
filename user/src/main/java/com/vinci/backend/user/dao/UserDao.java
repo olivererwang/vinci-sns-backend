@@ -13,9 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -36,7 +34,7 @@ public class UserDao {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
         }
         try {
-            UserModel info = jdbcTemplate.query("SELECT id,userid,device_id,nick_name,version,extra,create_date,update_time FROM " + USER_DATABASE_NAME + ".user WHERE userid=?",
+            UserModel info = jdbcTemplate.query("SELECT id,userid,device_imei,nick_name,version,extra,create_date,update_time FROM " + USER_DATABASE_NAME + ".user WHERE userid=?",
                     new ResultSetExtractor<UserModel>() {
                         @Override
                         public UserModel extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -47,7 +45,7 @@ public class UserDao {
                                 UserModel info = new UserModel();
                                 info.setId(rs.getLong("id"));
                                 info.setUserId(rs.getString("userid"));
-                                info.setDeviceId(rs.getLong("device_id"));
+                                info.setDeviceIMEI(rs.getString("device_imei"));
                                 info.setNickName(rs.getString("nick_name"));
                                 info.setVersion(rs.getInt("version"));
                                 info.setUserSettings(JsonUtils.decode(rs.getString("extra"), UserModel.UserSettings.class));
@@ -95,13 +93,13 @@ public class UserDao {
         }
     }
 
-    public void changeUserDevice(String userId, long deviceId) {
+    public void changeUserDevice(String userId, String deviceIMEI) {
         if (StringUtils.isEmpty(userId)) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
         }
         try {
-            int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET device_id=? WHERE userid=?",
-                    deviceId,userId);
+            int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET device_imei=? WHERE userid=?",
+                    deviceIMEI,userId);
             if (rowCount == 0) {
                 throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 11, "用户不存在"));
             }
@@ -136,7 +134,7 @@ public class UserDao {
         }
     }
 
-    public UserModel newUser(final UserModel userModel) {
+    public void newUser(final UserModel userModel) {
         if (userModel == null) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 24, "要插入的用户数据为空"));
         }
@@ -150,24 +148,15 @@ public class UserDao {
             userModel.setUserSettings(new UserModel.UserSettings());
         }
         try {
-            GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-            int rowCount = jdbcTemplate.update(new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                    PreparedStatement statement = con.prepareStatement("insert into " + USER_DATABASE_NAME + ".user (userid,nick_name,device_id,extra) values (?,?,?,?)"
-                            , Statement.RETURN_GENERATED_KEYS);
-                    statement.setString(1,userModel.getUserId());
-                    statement.setString(2,userModel.getNickName());
-                    statement.setLong(3,userModel.getDeviceId());
-                    statement.setString(4,userModel.getUserSettings().toString());
-                    return statement;
-                }
-            },keyHolder);
-            if (rowCount == 1) {
-                userModel.setId(keyHolder.getKey().longValue());
-                return userModel;
+            int rowCount = jdbcTemplate.update("insert into " + USER_DATABASE_NAME + ".user (userid,nick_name,device_imei,extra) values (?,?,?,?)",
+                    userModel.getUserId(),
+                    userModel.getNickName(),
+                    userModel.getDeviceIMEI(),
+                    userModel.getUserSettings().toString()
+            );
+            if (rowCount != 1) {
+                throw new BizException(new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
             }
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
         } catch (BizException e) {
             throw e;
         } catch (DuplicateKeyException e) {

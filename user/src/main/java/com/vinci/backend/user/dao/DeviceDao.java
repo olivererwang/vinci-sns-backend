@@ -55,14 +55,11 @@ public class DeviceDao {
                 throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
             }
             return info;
-        } catch (BizException e) {
-            throw e;
         } catch (DataAccessException e) {
             throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.databaseErrorType, 1, "数据库错误"));
-        } catch (Exception e) {
-            throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
         }
     }
+
 
     public DeviceInfo getDeviceInfo(String imei, String macAddr) {
         if (StringUtils.isEmpty(imei)) {
@@ -96,16 +93,43 @@ public class DeviceDao {
                 throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
             }
             return info;
-        } catch (BizException e) {
-            throw e;
         } catch (DataAccessException e) {
             throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.databaseErrorType, 1, "数据库错误"));
-        } catch (Exception e) {
-            throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
         }
     }
 
-    public DeviceInfo insert(final DeviceInfo deviceInfo) {
+    public DeviceInfo getDeviceInfoByBindUser(final String userID) {
+        if (StringUtils.isEmpty(userID)) {
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "userId为空"));
+        }
+        try {
+            DeviceInfo info = jdbcTemplate.query("SELECT id,imei,mac_addr,userid,create_date,update_time FROM "+USER_DATABASE_NAME+".device WHERE userid=?",
+                    new ResultSetExtractor<DeviceInfo>() {
+                        @Override
+                        public DeviceInfo extractData(ResultSet rs) throws SQLException, DataAccessException {
+                            if (rs == null) {
+                                return null;
+                            }
+                            if (rs.next()) {
+                                DeviceInfo info = new DeviceInfo();
+                                info.setId(rs.getLong("id"));
+                                info.setImei(rs.getString("imei"));
+                                info.setMacAddr(rs.getString("mac_addr"));
+                                info.setUserId(rs.getString("userid"));
+                                info.setCreateDate(rs.getTimestamp("create_date"));
+                                info.setUpdateTime(rs.getTimestamp("update_time"));
+                                return info;
+                            }
+                            return null;
+                        }
+                    }, userID );
+            return info;
+        } catch (DataAccessException e) {
+            throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.databaseErrorType, 1, "数据库错误"));
+        }
+    }
+
+    public void insert(final DeviceInfo deviceInfo) {
         if (deviceInfo == null || deviceInfo.getId() != 0) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 4, "要插入的设备号有误"));
         }
@@ -115,13 +139,11 @@ public class DeviceDao {
         if (StringUtils.isEmpty(deviceInfo.getMacAddr())) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 6, "要插入的设备号有误，MAC地址为空"));
         }
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             int rowCount = jdbcTemplate.update(new PreparedStatementCreator() {
                 @Override
                 public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                    PreparedStatement statement = con.prepareStatement("INSERT INTO "+USER_DATABASE_NAME+".device (imei,mac_addr,userid) VALUES (?,?,?)"
-                            , Statement.RETURN_GENERATED_KEYS);
+                    PreparedStatement statement = con.prepareStatement("INSERT INTO "+USER_DATABASE_NAME+".device (imei,mac_addr,userid) VALUES (?,?,?)");
                     statement.setString(1, deviceInfo.getImei());
                     statement.setString(2, deviceInfo.getMacAddr());
                     if (deviceInfo.getUserId() == null) {
@@ -131,20 +153,14 @@ public class DeviceDao {
                     }
                     return statement;
                 }
-            }, keyHolder);
-            if (rowCount == 1) {
-                deviceInfo.setId(keyHolder.getKey().longValue());
-                return deviceInfo;
+            });
+            if (rowCount != 1) {
+                throw new BizException(new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
             }
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
-        } catch (BizException e) {
-            throw e;
         } catch (DuplicateKeyException e) {
             throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 2, "插入的设备号失败，设备号已存在"));
         } catch (DataAccessException e) {
             throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.databaseErrorType, 1, "数据库错误"));
-        } catch (Exception e) {
-            throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
         }
 
     }
@@ -168,12 +184,8 @@ public class DeviceDao {
             if (rowCount == 0) {
                 throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
             }
-        } catch (BizException e) {
-            throw e;
         } catch (DataAccessException e) {
             throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.databaseErrorType, 1, "数据库错误"));
-        } catch (Exception e) {
-            throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
         }
     }
 }

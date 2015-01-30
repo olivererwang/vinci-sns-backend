@@ -16,7 +16,7 @@ public class UserModel implements Serializable{
     private long id;
     private String userId;
     private String nickName;
-    private long deviceId;
+    private String deviceIMEI;
 
     @JsonUnwrapped
     private UserSettings userSettings;
@@ -71,12 +71,12 @@ public class UserModel implements Serializable{
         this.nickName = nickName;
     }
 
-    public long getDeviceId() {
-        return deviceId;
+    public String getDeviceIMEI() {
+        return deviceIMEI;
     }
 
-    public void setDeviceId(long deviceId) {
-        this.deviceId = deviceId;
+    public void setDeviceIMEI(String deviceIMEI) {
+        this.deviceIMEI = deviceIMEI;
     }
 
     public UserSettings getUserSettings() {
@@ -117,7 +117,7 @@ public class UserModel implements Serializable{
                 "id=" + id +
                 ", userId='" + userId + '\'' +
                 ", nickName='" + nickName + '\'' +
-                ", deviceId=" + deviceId +
+                ", deviceIMEI=" + deviceIMEI +
                 ", userSettings=" + userSettings +
                 ", version=" + version +
                 ", createDate=" + createDate +

@@ -10,7 +10,7 @@ create table `device` (
   `create_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '此次操作的时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_mac_addr_device_id` (`mac_addr`,`imei`),
+  UNIQUE KEY `unique_imei` (`imei`),
   INDEX `idx_userid` (`userid`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志表';
 
@@ -20,7 +20,7 @@ CREATE TABLE `user` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `userid` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '用户唯一id',
   `nick_name` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '用户昵称，唯一的',
-  `device_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'device id对应device表的id',
+  `device_imei` varchar(64) NOT NULL DEFAULT '' COMMENT '绑定的设备唯一id',
   `extra` TEXT NOT NULL COMMENT '存储用户其他信息',
   `version` int(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时的版本号',
   `create_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
