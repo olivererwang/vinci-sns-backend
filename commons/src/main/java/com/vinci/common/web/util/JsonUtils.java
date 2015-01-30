@@ -1,22 +1,25 @@
 package com.vinci.common.web.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
 /**
+ * Json工具类
  * Created by tim@vinci on 15-1-27.
  */
 public class JsonUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
     private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private static final FastDateFormat DATE_FORMAT = FastDateFormat.getInstance(DATE_PATTERN);
@@ -35,6 +38,34 @@ public class JsonUtils {
         module.addSerializer(Date.class, new DateJsonSerializer());
         module.addDeserializer(Date.class, new DateJsonDeserializer());
         objectMapper.registerModule(module);
+    }
+
+    public static String encode(Object obj) {
+        try {
+            return objectMapper.writeValueAsString(obj);
+        } catch (IOException e) {
+            logger.error("encode(Object)", e); //$NON-NLS-1$
+        }
+        return null;
+    }
+
+    public static <T> T decode(String json, Class<T> valueType) {
+        try {
+            return objectMapper.readValue(json, valueType);
+        } catch (IOException e) {
+            logger.error("decode(String, Class<T>)", e); //$NON-NLS-1$
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T decode(String json, TypeReference<T> reference) {
+        try {
+            return (T) objectMapper.readValue(json, reference);
+        } catch (IOException e) {
+            logger.error("decode(String, Class<T>)", e);
+        }
+        return null;
     }
 
     public static ObjectMapper getObjectMapperInstance() {

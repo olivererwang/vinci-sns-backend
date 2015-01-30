@@ -19,11 +19,13 @@ DROP TABLE if EXISTS user;
 CREATE TABLE `user` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `userid` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '用户唯一id',
+  `nick_name` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '用户昵称，唯一的',
   `device_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'device id对应device表的id',
   `extra` TEXT NOT NULL COMMENT '存储用户其他信息',
   `version` int(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时的版本号',
   `create_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '此次操作的时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_userid` (`userid`)
+  UNIQUE KEY `unique_userid` (`userid`),
+  UNIQUE KEY `unique_nick_name` (`nick_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='操作日志表';

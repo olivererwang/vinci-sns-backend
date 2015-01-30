@@ -9,12 +9,18 @@ public class ErrorCode implements Serializable {
 
 
 
-    public ErrorCode(ModelType type , int code, String message) {
+    public ErrorCode(ModelType type , ErrorType errorType , int code, String message) {
         super();
-        if (type == null || code >= 10000) {
-            throw new IllegalArgumentException("new error code instance error!");
+        if (type == null) {
+            type = ModelType.system;
         }
-        this.code = type.getTypeCode() + code;
+        if (errorType == null) {
+            errorType = ErrorType.unknowErrorType;
+        }
+        if (code >= 10000) {
+            code = 0;
+        }
+        this.code = type.getTypeCode() + errorType.getTypeCode() +code;
         this.message = message;
     }
     

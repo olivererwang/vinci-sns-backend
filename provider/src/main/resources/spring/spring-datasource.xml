@@ -53,6 +53,7 @@
     <!-- 创建JdbcTemplate-->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="dataSource" />
+        <property name="fetchSize" value="10"/>
     </bean>
     <!-- 创建SqlSessionFactory -->
     <!--<bean id="sqlSessionFactory" name="sqlSessionFactory"-->

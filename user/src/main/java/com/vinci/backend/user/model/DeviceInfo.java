@@ -1,5 +1,7 @@
 package com.vinci.backend.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
@@ -7,11 +9,12 @@ import java.util.Date;
  * Created by tim@vinci on 15-1-28.
  */
 public class DeviceInfo {
+    @JsonIgnore
     private long id;
     private String imei;
     private String macAddr;
     private String userId;
-    private Date createTime;
+    private Date createDate;
     private Date updateTime;
 
     public long getId() {
@@ -46,12 +49,12 @@ public class DeviceInfo {
         this.userId = userId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public Date getUpdateTime() {
@@ -69,7 +72,7 @@ public class DeviceInfo {
                 ", imei='" + imei + '\'' +
                 ", macAddr='" + macAddr + '\'' +
                 ", userId='" + userId + '\'' +
-                ", createTime=" + createTime +
+                ", createDate=" + createDate +
                 ", updateTime=" + updateTime +
                 '}';
     }
