@@ -5,14 +5,13 @@ import com.vinci.common.base.exception.BizException;
 import com.vinci.common.base.exception.ErrorCode;
 import com.vinci.common.base.exception.ErrorType;
 import com.vinci.common.base.exception.ModelType;
-import static com.vinci.backend.user.Constants.*;
+import static com.vinci.backend.Constants.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

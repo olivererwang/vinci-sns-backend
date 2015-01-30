@@ -12,7 +12,7 @@ create table `device` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_imei` (`imei`),
   INDEX `idx_userid` (`userid`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志表';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='设备表';
 
 -- 用户数据存储
 DROP TABLE if EXISTS user;
@@ -26,4 +26,4 @@ CREATE TABLE `user` (
   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '此次操作的时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_nick_name` (`nick_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8mb4 COMMENT='操作日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8mb4 COMMENT='用户基本信息表';

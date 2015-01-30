@@ -9,10 +9,14 @@ import com.vinci.common.base.exception.BizException;
 import com.vinci.common.base.exception.ErrorCode;
 import com.vinci.common.base.exception.ErrorType;
 import com.vinci.common.base.exception.ModelType;
+import com.vinci.common.web.util.ApplicationContextUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.UUID;
 
@@ -26,8 +30,10 @@ public class UserService {
     @Resource
     private DeviceDao deviceDao;
 
-    @Resource
     private UserService thisService;
+
+    @Autowired  //①  注入上下文
+    private ApplicationContext context;
     /**
      * 新建用户
      */
@@ -186,5 +192,10 @@ public class UserService {
     private void changeBindDevice(DeviceInfo deviceInfo , UserModel userModel) {
         deviceDao.updateBindUser(deviceInfo);
         userDao.changeUserDevice(userModel.getId(),deviceInfo.getImei());
+    }
+
+    @PostConstruct
+    public void afterSetup() {
+        thisService = context.getBean(UserService.class);
     }
 }

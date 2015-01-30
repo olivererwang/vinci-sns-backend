@@ -1,10 +1,7 @@
-import com.vinci.backend.user.dao.DeviceDao;
 import com.vinci.backend.user.dao.UserDao;
 import com.vinci.backend.user.model.UserModel;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.UUID;
 
 /**
  * Created by tim@vinci on 15-1-30.

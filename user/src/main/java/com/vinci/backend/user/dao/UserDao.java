@@ -7,7 +7,7 @@ import com.vinci.common.base.exception.ErrorType;
 import com.vinci.common.base.exception.ModelType;
 import com.vinci.common.web.util.JsonUtils;
 
-import static com.vinci.backend.user.Constants.*;
+import static com.vinci.backend.Constants.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
