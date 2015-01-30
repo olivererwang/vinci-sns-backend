@@ -29,7 +29,7 @@ public class DeviceDao {
 
     public DeviceInfo getDeviceInfoById(long id) {
         if (id <= 0) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 1, "要查询的设备id为负值"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 1, "要查询的设备id为负值"));
         }
         try {
             DeviceInfo info = jdbcTemplate.query("SELECT id,imei,mac_addr,userid,create_date,update_time FROM "+USER_DATABASE_NAME+".device WHERE id=?", new ResultSetExtractor<DeviceInfo>() {
@@ -66,10 +66,10 @@ public class DeviceDao {
 
     public DeviceInfo getDeviceInfo(String imei, String macAddr) {
         if (StringUtils.isEmpty(imei)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 2, "IMEI号为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 2, "IMEI号为空"));
         }
         if (StringUtils.isEmpty(macAddr)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 3, "MAC地址为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 3, "MAC地址为空"));
         }
         try {
             DeviceInfo info = jdbcTemplate.query("SELECT id,imei,mac_addr,userid,create_date,update_time FROM "+USER_DATABASE_NAME+".device WHERE imei=? AND mac_addr=?",
@@ -107,13 +107,13 @@ public class DeviceDao {
 
     public DeviceInfo insert(final DeviceInfo deviceInfo) {
         if (deviceInfo == null || deviceInfo.getId() != 0) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 4, "要插入的设备号有误"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 4, "要插入的设备号有误"));
         }
         if (StringUtils.isEmpty(deviceInfo.getImei())) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 5, "要插入的设备号有误，IMEI号为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 5, "要插入的设备号有误，IMEI号为空"));
         }
         if (StringUtils.isEmpty(deviceInfo.getMacAddr())) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 6, "要插入的设备号有误，MAC地址为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 6, "要插入的设备号有误，MAC地址为空"));
         }
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         try {
@@ -151,16 +151,16 @@ public class DeviceDao {
 
     public void updateBindUser(final DeviceInfo deviceInfo) {
         if (deviceInfo == null || deviceInfo.getId() == 0) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 7, "绑定设备参数为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 7, "绑定设备参数为空"));
         }
         if (StringUtils.isEmpty(deviceInfo.getImei())) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 8, "绑定设备参数有误，IMEI号为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 8, "绑定设备参数有误，IMEI号为空"));
         }
         if (StringUtils.isEmpty(deviceInfo.getMacAddr())) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 9, "绑定设备参数有误，MAC地址为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 9, "绑定设备参数有误，MAC地址为空"));
         }
         if (deviceInfo.getUserId() == null) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 10, "绑定设备参数有误，userID为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 10, "绑定设备参数有误，userID为空"));
         }
         try {
             int rowCount = jdbcTemplate.update("UPDATE "+USER_DATABASE_NAME+".device SET userid=? WHERE id=? AND imei=? AND mac_addr=?",

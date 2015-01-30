@@ -6,7 +6,7 @@ package com.vinci.common.base.exception;
  */
 public enum ErrorType {
     /** 参数错误 **/
-    argumentErrorType(0010000),
+    ArgumentErrorType(0010000),
     /** 数据库相关错误 **/
     databaseErrorType(0020000),
     /** 数据约束(冲突)相关错误，例如唯一索引约束等**/

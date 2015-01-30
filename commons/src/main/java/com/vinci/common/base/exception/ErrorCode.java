@@ -1,5 +1,7 @@
 package com.vinci.common.base.exception;
 
+import com.vinci.common.base.i18n.I18NResource;
+
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -7,20 +9,26 @@ public class ErrorCode implements Serializable {
 
     private static final long serialVersionUID = -6239192959362321352L;
 
+    private ModelType modelType;
 
+    private ErrorType errorType;
 
     public ErrorCode(ModelType type , ErrorType errorType , int code, String message) {
         super();
         if (type == null) {
-            type = ModelType.system;
+            this.modelType = ModelType.system;
+        } else {
+            this.modelType = type;
         }
         if (errorType == null) {
-            errorType = ErrorType.unknowErrorType;
+            this.errorType = ErrorType.unknowErrorType;
+        } else {
+            this.errorType = errorType;
         }
         if (code >= 10000) {
             code = 0;
         }
-        this.code = type.getTypeCode() + errorType.getTypeCode() +code;
+        this.code = this.modelType.getTypeCode() + this.errorType.getTypeCode() +code;
         this.message = message;
     }
     
@@ -47,8 +55,12 @@ public class ErrorCode implements Serializable {
         this.message = message;
     }
 
-    public String getLocaleMessage(Locale lang) {
-        return null;
+    public ModelType getModelType() {
+        return modelType;
+    }
+
+    public ErrorType getErrorType() {
+        return errorType;
     }
 
     @Override
@@ -62,4 +74,7 @@ public class ErrorCode implements Serializable {
         return builder.toString();
     }
 
+    public boolean isCritical() {
+        return (getErrorType() == ErrorType.unknowErrorType || getErrorType() == ErrorType.databaseErrorType);
+    }
 }

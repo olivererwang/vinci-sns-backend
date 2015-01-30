@@ -33,7 +33,7 @@ public class UserDao {
 
     public UserModel getUser(String userId) {
         if (StringUtils.isEmpty(userId)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 21, "UserId为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
         }
         try {
             UserModel info = jdbcTemplate.query("SELECT id,userid,device_id,nick_name,version,extra,create_date,update_time FROM " + USER_DATABASE_NAME + ".user WHERE userid=?",
@@ -73,10 +73,10 @@ public class UserDao {
 
     public void modifyUserNickName(String userId, String nickName) {
         if (StringUtils.isEmpty(userId)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 21, "UserId为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
         }
         if (StringUtils.isEmpty(nickName)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 22, "昵称为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 22, "昵称为空"));
         }
         try {
             int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET nick_name=? WHERE userid=?",
@@ -97,7 +97,7 @@ public class UserDao {
 
     public void changeUserDevice(String userId, long deviceId) {
         if (StringUtils.isEmpty(userId)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 21, "UserId为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
         }
         try {
             int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET device_id=? WHERE userid=?",
@@ -116,10 +116,10 @@ public class UserDao {
 
     public void modifyUserSettings(String userId, UserModel.UserSettings userSettings , int version) {
         if (StringUtils.isEmpty(userId)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 21, "UserId为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
         }
         if (userSettings == null) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 23, "要修改的用户设置为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 23, "要修改的用户设置为空"));
         }
         try {
             int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET extra=?,version=version+1 WHERE userid=? and version=?",
@@ -138,13 +138,13 @@ public class UserDao {
 
     public UserModel newUser(final UserModel userModel) {
         if (userModel == null) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 24, "要插入的用户数据为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 24, "要插入的用户数据为空"));
         }
         if (StringUtils.isEmpty(userModel.getUserId())) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 21, "UserId为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
         }
         if (StringUtils.isEmpty(userModel.getNickName())) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.argumentErrorType, 22, "昵称为空"));
+            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 22, "昵称为空"));
         }
         if (userModel.getUserSettings() == null) {
             userModel.setUserSettings(new UserModel.UserSettings());
