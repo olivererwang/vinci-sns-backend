@@ -43,7 +43,7 @@ public class DeviceDao {
                         info.setId(rs.getLong("id"));
                         info.setImei(rs.getString("imei"));
                         info.setMacAddr(rs.getString("mac_addr"));
-                        info.setUserId(rs.getString("userid"));
+                        info.setUserId(rs.getLong("userid"));
                         info.setCreateDate(rs.getTimestamp("create_date"));
                         info.setUpdateTime(rs.getTimestamp("update_time"));
                         return info;
@@ -81,7 +81,7 @@ public class DeviceDao {
                                 info.setId(rs.getLong("id"));
                                 info.setImei(rs.getString("imei"));
                                 info.setMacAddr(rs.getString("mac_addr"));
-                                info.setUserId(rs.getString("userid"));
+                                info.setUserId(rs.getLong("userid"));
                                 info.setCreateDate(rs.getTimestamp("create_date"));
                                 info.setUpdateTime(rs.getTimestamp("update_time"));
                                 return info;
@@ -98,10 +98,7 @@ public class DeviceDao {
         }
     }
 
-    public DeviceInfo getDeviceInfoByBindUser(final String userID) {
-        if (StringUtils.isEmpty(userID)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "userId为空"));
-        }
+    public DeviceInfo getDeviceInfoByBindUser(final long userID) {
         try {
             DeviceInfo info = jdbcTemplate.query("SELECT id,imei,mac_addr,userid,create_date,update_time FROM "+USER_DATABASE_NAME+".device WHERE userid=?",
                     new ResultSetExtractor<DeviceInfo>() {
@@ -115,7 +112,7 @@ public class DeviceDao {
                                 info.setId(rs.getLong("id"));
                                 info.setImei(rs.getString("imei"));
                                 info.setMacAddr(rs.getString("mac_addr"));
-                                info.setUserId(rs.getString("userid"));
+                                info.setUserId(rs.getLong("userid"));
                                 info.setCreateDate(rs.getTimestamp("create_date"));
                                 info.setUpdateTime(rs.getTimestamp("update_time"));
                                 return info;
@@ -146,11 +143,7 @@ public class DeviceDao {
                     PreparedStatement statement = con.prepareStatement("INSERT INTO "+USER_DATABASE_NAME+".device (imei,mac_addr,userid) VALUES (?,?,?)");
                     statement.setString(1, deviceInfo.getImei());
                     statement.setString(2, deviceInfo.getMacAddr());
-                    if (deviceInfo.getUserId() == null) {
-                        statement.setString(3, "");
-                    } else {
-                        statement.setString(3, deviceInfo.getUserId());
-                    }
+                    statement.setLong(3, deviceInfo.getUserId());
                     return statement;
                 }
             });
@@ -175,7 +168,7 @@ public class DeviceDao {
         if (StringUtils.isEmpty(deviceInfo.getMacAddr())) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 9, "绑定设备参数有误，MAC地址为空"));
         }
-        if (deviceInfo.getUserId() == null) {
+        if (deviceInfo.getUserId() <= 0) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 10, "绑定设备参数有误，userID为空"));
         }
         try {

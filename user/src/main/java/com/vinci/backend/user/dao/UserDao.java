@@ -13,7 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -29,10 +31,7 @@ public class UserDao {
     @Resource
     private JdbcTemplate jdbcTemplate;
 
-    public UserModel getUser(String userId) {
-        if (StringUtils.isEmpty(userId)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
-        }
+    public UserModel getUser(long userId) {
         try {
             UserModel info = jdbcTemplate.query("SELECT id,userid,device_imei,nick_name,version,extra,create_date,update_time FROM " + USER_DATABASE_NAME + ".user WHERE userid=?",
                     new ResultSetExtractor<UserModel>() {
@@ -44,7 +43,6 @@ public class UserDao {
                             if (rs.next()) {
                                 UserModel info = new UserModel();
                                 info.setId(rs.getLong("id"));
-                                info.setUserId(rs.getString("userid"));
                                 info.setDeviceIMEI(rs.getString("device_imei"));
                                 info.setNickName(rs.getString("nick_name"));
                                 info.setVersion(rs.getInt("version"));
@@ -60,19 +58,12 @@ public class UserDao {
                 throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 11, "用户不存在"));
             }
             return info;
-        } catch (BizException e) {
-            throw e;
         } catch (DataAccessException e) {
             throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.databaseErrorType, 1, "数据库错误"));
-        } catch (Exception e) {
-            throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
         }
     }
 
-    public void modifyUserNickName(String userId, String nickName) {
-        if (StringUtils.isEmpty(userId)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
-        }
+    public void modifyUserNickName(long userId, String nickName) {
         if (StringUtils.isEmpty(nickName)) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 22, "昵称为空"));
         }
@@ -82,40 +73,26 @@ public class UserDao {
             if (rowCount == 0) {
                 throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 11, "用户不存在"));
             }
-        } catch (BizException e) {
-            throw e;
         } catch (DuplicateKeyException e) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 12, "昵称已经被使用"));
         } catch (DataAccessException e) {
             throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.databaseErrorType, 1, "数据库错误"));
-        } catch (Exception e) {
-            throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
         }
     }
 
-    public void changeUserDevice(String userId, String deviceIMEI) {
-        if (StringUtils.isEmpty(userId)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
-        }
+    public void changeUserDevice(long userId, String deviceIMEI) {
         try {
             int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET device_imei=? WHERE userid=?",
                     deviceIMEI,userId);
             if (rowCount == 0) {
                 throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 11, "用户不存在"));
             }
-        } catch (BizException e) {
-            throw e;
         } catch (DataAccessException e) {
             throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.databaseErrorType, 1, "数据库错误"));
-        } catch (Exception e) {
-            throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
         }
     }
 
-    public void modifyUserSettings(String userId, UserModel.UserSettings userSettings , int version) {
-        if (StringUtils.isEmpty(userId)) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
-        }
+    public void modifyUserSettings(long userId, UserModel.UserSettings userSettings , int version) {
         if (userSettings == null) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 23, "要修改的用户设置为空"));
         }
@@ -125,21 +102,14 @@ public class UserDao {
             if (rowCount == 0) {
                 throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 13, "用户设置已经被修改，有冲突"));
             }
-        } catch (BizException e) {
-            throw e;
         } catch (DataAccessException e) {
             throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.databaseErrorType, 1, "数据库错误"));
-        } catch (Exception e) {
-            throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
         }
     }
 
-    public void newUser(final UserModel userModel) {
+    public long newUser(final UserModel userModel) {
         if (userModel == null) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 24, "要插入的用户数据为空"));
-        }
-        if (StringUtils.isEmpty(userModel.getUserId())) {
-            throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 21, "UserId为空"));
         }
         if (StringUtils.isEmpty(userModel.getNickName())) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 22, "昵称为空"));
@@ -148,23 +118,26 @@ public class UserDao {
             userModel.setUserSettings(new UserModel.UserSettings());
         }
         try {
-            int rowCount = jdbcTemplate.update("insert into " + USER_DATABASE_NAME + ".user (userid,nick_name,device_imei,extra) values (?,?,?,?)",
-                    userModel.getUserId(),
-                    userModel.getNickName(),
-                    userModel.getDeviceIMEI(),
-                    userModel.getUserSettings().toString()
-            );
+            GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+            int rowCount = jdbcTemplate.update(new PreparedStatementCreator() {
+                @Override
+                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                    PreparedStatement statement = con.prepareStatement("insert into " + USER_DATABASE_NAME + ".user (nick_name,device_imei,extra) values (?,?,?)",
+                            Statement.RETURN_GENERATED_KEYS);
+                    statement.setString(1,userModel.getNickName());
+                    statement.setString(2,userModel.getDeviceIMEI()==null?"":userModel.getDeviceIMEI());
+                    statement.setString(3,userModel.getUserSettings().toString());
+                    return statement;
+                }
+            },keyHolder);
             if (rowCount != 1) {
                 throw new BizException(new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
             }
-        } catch (BizException e) {
-            throw e;
+            return keyHolder.getKey().longValue();
         } catch (DuplicateKeyException e) {
             throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 12, "昵称已经被使用"));
         } catch (DataAccessException e) {
             throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.databaseErrorType, 1, "数据库错误"));
-        } catch (Exception e) {
-            throw new BizException(e, new ErrorCode(ModelType.user, ErrorType.unknowErrorType, 1, "未知错误"));
         }
     }
 }

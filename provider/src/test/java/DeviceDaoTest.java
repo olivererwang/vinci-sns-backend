@@ -21,12 +21,11 @@ public class DeviceDaoTest extends BaseTest{
     public void insert() {
         DeviceInfo info = new DeviceInfo();
         info.setImei("edddd");
-        info.setUserId("yyyyy");
         info.setMacAddr("cccccc");
 
-        info = deviceDao.insert(info);
+        deviceDao.insert(info);
 
-        System.out.println("--------"+info);
+        System.out.println("--------"+deviceDao.getDeviceInfo("edddd","cccccc"));
     }
 
     @Test
@@ -35,9 +34,4 @@ public class DeviceDaoTest extends BaseTest{
         System.out.println(deviceDao.getDeviceInfoById(6));
     }
 
-
-    @Test
-    public void testGet() {
-        System.out.println(deviceDao.getDeviceInfo("edddd","cccccc"));
-    }
 }

@@ -1,6 +1,7 @@
 package com.vinci.backend.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.vinci.common.web.util.JsonUtils;
 
@@ -12,9 +13,8 @@ import java.util.Date;
  * Created by tim@vinci on 15-1-29.
  */
 public class UserModel implements Serializable{
-    @JsonIgnore
+    @JsonProperty("userid")
     private long id;
-    private String userId;
     private String nickName;
     private String deviceIMEI;
 
@@ -53,14 +53,6 @@ public class UserModel implements Serializable{
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getNickName() {
@@ -115,7 +107,6 @@ public class UserModel implements Serializable{
     public String toString() {
         return "UserModel{" +
                 "id=" + id +
-                ", userId='" + userId + '\'' +
                 ", nickName='" + nickName + '\'' +
                 ", deviceIMEI=" + deviceIMEI +
                 ", userSettings=" + userSettings +

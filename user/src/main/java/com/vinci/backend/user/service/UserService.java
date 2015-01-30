@@ -46,9 +46,8 @@ public class UserService {
                 UserModel model = new UserModel();
                 model.setNickName(nickname.trim());
                 model.setUserSettings(userSettings);
-                model.setUserId(UUID.randomUUID().toString());
-                userDao.newUser(model);
-                return userDao.getUser(model.getUserId());
+                long userid = userDao.newUser(model);
+                return userDao.getUser(userid);
             }
         }.execute();
     }
@@ -57,7 +56,7 @@ public class UserService {
     /**
      * 通过userID获取用户资料
      */
-    public UserModel getUserByUserID(final String userId) {
+    public UserModel getUserByUserID(final long userId) {
         return new BizTemplate<UserModel>(ModelType.user, "getUserByUserID") {
 
             @Override
@@ -89,7 +88,7 @@ public class UserService {
                 if (deviceInfo == null) {
                     throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
                 }
-                if (StringUtils.isEmpty(deviceInfo.getUserId())) {
+                if (deviceInfo.getUserId() <= 0) {
                     throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 21, "设备未绑定用户"));
                 }
                 return userDao.getUser(deviceInfo.getUserId());
@@ -101,7 +100,7 @@ public class UserService {
     /**
      * 绑定一个设备
      */
-    public boolean bindDevice(final String userID, final String IMEI, final String macAddr) {
+    public boolean bindDevice(final long userID, final String IMEI, final String macAddr) {
         return new BizTemplate<Boolean>(ModelType.user, "bindDevice") {
 
             @Override
@@ -115,7 +114,7 @@ public class UserService {
                 if (deviceInfo == null) {
                     throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
                 }
-                if (deviceInfo.getUserId() != null && deviceInfo.getUserId().equals(userID)) {
+                if (deviceInfo.getUserId() == userID) {
                     return Boolean.TRUE;
                 }
                 if (deviceDao.getDeviceInfoByBindUser(userID) != null) {
@@ -125,7 +124,7 @@ public class UserService {
                 if (userModel == null) {
                     throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 11, "用户不存在"));
                 }
-                deviceInfo.setUserId(userModel.getUserId());
+                deviceInfo.setUserId(userModel.getId());
                 userModel.setDeviceIMEI(deviceInfo.getImei());
                 thisService.changeBindDevice(deviceInfo, userModel);
                 return true;
@@ -136,7 +135,7 @@ public class UserService {
     /**
      * 解绑一个设备
      */
-    public boolean unbindDevice(final String userID, final String IMEI, final String macAddr) {
+    public boolean unbindDevice(final long userID, final String IMEI, final String macAddr) {
         return new BizTemplate<Boolean>(ModelType.user, "unbindDevice") {
 
             @Override
@@ -150,14 +149,14 @@ public class UserService {
                 if (deviceInfo == null) {
                     throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
                 }
-                if (deviceInfo.getUserId() == null || !deviceInfo.getUserId().equals(userID)) {
+                if (deviceInfo.getUserId() != userID) {
                     throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 1, "要设备和当前用户没有绑定"));
                 }
                 UserModel userModel = userDao.getUser(userID);
                 if (userModel == null) {
                     throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 11, "用户不存在"));
                 }
-                deviceInfo.setUserId("");
+                deviceInfo.setUserId(0);
                 userModel.setDeviceIMEI("");
                 thisService.changeBindDevice(deviceInfo,userModel);
                 return true;
@@ -177,7 +176,7 @@ public class UserService {
 
             @Override
             protected Boolean process() throws Exception {
-                userDao.modifyUserSettings(userModel.getUserId(),userModel.getUserSettings(),userModel.getVersion());
+                userDao.modifyUserSettings(userModel.getId(),userModel.getUserSettings(),userModel.getVersion());
                 return Boolean.TRUE;
             }
         }.execute();
@@ -186,6 +185,6 @@ public class UserService {
     @Transactional
     private void changeBindDevice(DeviceInfo deviceInfo , UserModel userModel) {
         deviceDao.updateBindUser(deviceInfo);
-        userDao.changeUserDevice(userModel.getUserId(),deviceInfo.getImei());
+        userDao.changeUserDevice(userModel.getId(),deviceInfo.getImei());
     }
 }

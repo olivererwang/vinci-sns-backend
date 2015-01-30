@@ -13,7 +13,7 @@ public class DeviceInfo {
     private long id;
     private String imei;
     private String macAddr;
-    private String userId;
+    private long userId;
     private Date createDate;
     private Date updateTime;
 
@@ -41,11 +41,11 @@ public class DeviceInfo {
         this.macAddr = macAddr;
     }
 
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

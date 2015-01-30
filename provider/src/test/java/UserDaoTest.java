@@ -22,22 +22,21 @@ public class UserDaoTest  extends BaseTest {
     public void testInsert() {
         UserModel userModel = new UserModel();
         userModel.setNickName("abcd");
-        userModel.setUserId(UUID.randomUUID().toString());
 
         System.out.println(userDao.newUser(userModel));
     }
 
     @Test
     public void testGetUser() {
-        System.err.println(userDao.getUser("836f63e3-911c-43f4-a95b-fee9d82adf76"));
+        System.err.println(userDao.getUser(1));
 //        System.out.println(userDao.getUser("836f63e3-911c-43f4-a95b-fee9d82adf7"));
     }
 
     @Test
     public void testModify() {
-        String userId = "836f63e3-911c-43f4-a95b-fee9d82adf76";
-        UserModel userModel = userDao.getUser(userId);
-        userDao.changeUserDevice(userId,123456L);
+        long userId = 1;
+        UserModel userModel = userDao.getUser(1);
+        userDao.changeUserDevice(userId,"cccc");
         testGetUser();
         userDao.modifyUserNickName(userId, "bbbb");
         testGetUser();
