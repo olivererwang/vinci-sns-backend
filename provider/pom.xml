@@ -20,10 +20,6 @@
             <groupId>com.vinci</groupId>
             <artifactId>sns-server.commons</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.vinci</groupId>
-            <artifactId>sns-server.user</artifactId>
-        </dependency>
 
         <!-- test -->
         <dependency>
