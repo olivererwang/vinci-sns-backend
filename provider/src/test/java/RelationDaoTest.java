@@ -16,12 +16,12 @@ public class RelationDaoTest extends BaseTest{
     public void setUp() {
         dao = applicationContext.getBean(RelationDao.class);
         dataSource = applicationContext.getBean(DataSource.class);
-        executeSql(dataSource,"delete from relations.relation");
+//        executeSql(dataSource,"delete from relations.relation");
     }
 
     @Test
     public void testInsert() {
-        dao.createRelation(1234L,1,2,3,4);
+        dao.createRelation(1234L, 1,2,3,4);
         dao.createRelation(12,1);
         dao.createRelation(13,1);
         dao.createRelation(14,1);
@@ -39,8 +39,8 @@ public class RelationDaoTest extends BaseTest{
 
     @Test
     public void testGetAttention() {
-        testInsert();
-        System.out.println(dao.getAttentions(1234L, 0, 1, true));
-        System.out.println(dao.getAttentions(1L,0,3,false));
+//        testInsert();
+        System.out.println(dao.getAttentions(1234L, 24, 1, true));
+        System.out.println(dao.getAttentions(1L,28,3,false));
     }
 }

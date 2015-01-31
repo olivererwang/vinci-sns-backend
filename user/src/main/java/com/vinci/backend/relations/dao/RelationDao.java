@@ -86,11 +86,13 @@ public class RelationDao {
         try {
 
             StringBuilder sql = new StringBuilder("select id,").append(isGetAttentions ? "dst_user" : "source_user")
-                    .append(" as userid from ").append(RELATION_DATABASE_NAME).append(".relation where ")
-                    .append(isGetAttentions ? "source_user" : "dst_user").append("=?");
+                    .append(" as userid from ").append(RELATION_DATABASE_NAME).append(".relation")
+                    .append(" use index (`").append(isGetAttentions?"idx_source_user":"idx_dst_user").append("`)")
+                    .append(" where ").append(isGetAttentions ? "source_user" : "dst_user").append("=?");
             if (lastId > 0) {
-                sql.append(" and id>").append(lastId);
+                sql.append(" and id<").append(lastId);
             }
+            sql.append(" order by id desc");
             if (length > 0) {
                 sql.append(" limit ").append(length);
             }
