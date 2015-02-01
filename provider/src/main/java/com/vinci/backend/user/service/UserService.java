@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -77,6 +78,23 @@ public class UserService {
         }.execute();
     }
 
+    /**
+     * 通过userID获取用户资料
+     */
+    public List<UserModel> getUserByUserID(final List<Long> userId) {
+        return new BizTemplate<List<UserModel>>(ModelType.user, "getUserByUserIDList") {
+
+            @Override
+            protected void checkParams() throws BizException {
+                //do nothing
+            }
+
+            @Override
+            protected List<UserModel> process() throws Exception {
+                return userDao.getUser(userId);
+            }
+        }.execute();
+    }
     /**
      * 通过设备号获取绑定用户
      */

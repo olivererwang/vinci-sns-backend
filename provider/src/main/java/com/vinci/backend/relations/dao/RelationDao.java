@@ -26,15 +26,15 @@ public class RelationDao {
     @Resource
     private JdbcTemplate jdbcTemplate;
 
-    public void createRelation(final long sourceId, final long... dstIds) {
+    public void createRelation(final long sourceId, final List<Long> dstIds) {
         if (sourceId < 0) {
             throw new BizException(RELATION_ERROR_USERID_IS_NEGATIVE);
         }
-        if (dstIds == null || dstIds.length == 0) {
+        if (dstIds == null || dstIds.size() == 0) {
             throw new BizException(RELATION_ERROR_FOLLOWER_ID_IS_NEGATIVE);
         }
         String sql = "insert into " + RELATION_DATABASE_NAME + ".relation (source_user,dst_user) values ";
-        List<String> insertValues = Lists.newArrayListWithCapacity(dstIds.length);
+        List<String> insertValues = Lists.newArrayListWithCapacity(dstIds.size());
         for (long id : dstIds) {
             if (id <= 0) {
                 throw new BizException(RELATION_ERROR_FOLLOWER_ID_IS_NEGATIVE);
