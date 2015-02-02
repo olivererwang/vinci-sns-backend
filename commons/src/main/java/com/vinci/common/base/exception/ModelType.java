@@ -6,8 +6,8 @@ package com.vinci.common.base.exception;
 public enum ModelType {
     system(100000000),
     user(110000000),
-    relations(120000000);
-    private int i = Integer.MAX_VALUE;
+    relations(120000000),
+    feed(130000000);
 
     private final int typeCode;
     private ModelType(int typeCode) {

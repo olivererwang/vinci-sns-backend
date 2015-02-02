@@ -18,6 +18,7 @@ CREATE TABLE `feed_timeline` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id,用做feed_id',
   `userid` bigint(20) UNSIGNED NOT NULL COMMENT '谁的feed timeline',
   `feed_id` bigint(20) UNSIGNED NOT NULL COMMENT 'feedid',
+  `ref_feed_id` bigint(20) UNSIGNED NOT NULL COMMENT '引用的feedid',
   `create_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   INDEX `idx_user` (`userid` ,`id` desc)
