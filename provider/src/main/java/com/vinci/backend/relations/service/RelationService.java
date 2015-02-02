@@ -13,6 +13,7 @@ import com.vinci.common.base.exception.ModelType;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -68,8 +69,8 @@ public class RelationService {
     /**
      * 获取关注或粉丝关系
      */
-    public Attention getAttention(final UserModel source , final long lastId , final int size , final boolean isAttention) {
-        return new BizTemplate<Attention>(ModelType.relations,"getAttention") {
+    public List<Attention> getAttention(final UserModel source , final long lastId , final int size , final boolean isAttention) {
+        return new BizTemplate<List<Attention>>(ModelType.relations,"getAttention") {
             @Override
             protected void checkParams() throws BizException {
                 if (source == null) {
@@ -78,13 +79,11 @@ public class RelationService {
             }
 
             @Override
-            protected Attention process() throws Exception {
-                Attention attention = relationDao.getAttentions(source.getId(), lastId, size, isAttention);
+            protected List<Attention> process() throws Exception {
+                List<Attention> attention = relationDao.getAttentions(source.getId(), lastId, size, isAttention);
                 if (attention == null) {
-                    return new Attention(isAttention);
+                    return Collections.emptyList();
                 }
-                int totalCount= (isAttention?relationDao.getAttentionCount(source.getId()):relationDao.getFollowerCount(source.getId()));
-                attention.setTotalCount(totalCount);
                 return attention;
             }
         }.execute();

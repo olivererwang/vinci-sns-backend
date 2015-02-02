@@ -1,6 +1,7 @@
 package com.vinci.backend.relations.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,16 +23,13 @@ public class Attention implements Serializable{
      */
     private boolean isAttention = true;
 
-    /**
-     * 总共的关注或粉丝数
-     */
-    private int totalCount;
-    /**
-     * 分页用id
-     */
-    private long lastId;
+    private long id;
 
-    private List<Long> userIds;
+    private long sourceUserId;
+
+    private long dstUserId;
+
+    private Date createDate;
 
     public boolean isAttention() {
         return isAttention;
@@ -41,38 +39,46 @@ public class Attention implements Serializable{
         this.isAttention = isAttention;
     }
 
-
-    public long getLastId() {
-        return lastId;
+    public long getId() {
+        return id;
     }
 
-    public void setLastId(long lastId) {
-        this.lastId = lastId;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public List<Long> getUserIds() {
-        return userIds;
+    public long getSourceUserId() {
+        return sourceUserId;
     }
 
-    public void setUserIds(List<Long> userIds) {
-        this.userIds = userIds;
+    public void setSourceUserId(long sourceUserId) {
+        this.sourceUserId = sourceUserId;
     }
 
-    public int getTotalCount() {
-        return totalCount;
+    public long getDstUserId() {
+        return dstUserId;
     }
 
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
+    public void setDstUserId(long dstUserId) {
+        this.dstUserId = dstUserId;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     @Override
     public String toString() {
         return "Attention{" +
                 "isAttention=" + isAttention +
-                ", totalCount=" + totalCount +
-                ", lastId=" + lastId +
-                ", userIds=" + userIds +
+                ", id=" + id +
+                ", sourceUserId=" + sourceUserId +
+                ", dstUserId=" + dstUserId +
+                ", createDate=" + createDate +
                 '}';
     }
 }

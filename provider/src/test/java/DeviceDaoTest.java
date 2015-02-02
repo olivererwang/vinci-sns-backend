@@ -1,4 +1,3 @@
-import com.vinci.V1;
 import com.vinci.backend.user.dao.DeviceDao;
 import com.vinci.backend.user.model.DeviceInfo;
 import org.junit.Before;

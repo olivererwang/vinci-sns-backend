@@ -1,3 +1,4 @@
+import com.google.common.collect.Lists;
 import com.vinci.backend.relations.dao.RelationDao;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,13 +22,13 @@ public class RelationDaoTest extends BaseTest{
 
     @Test
     public void testInsert() {
-        dao.createRelation(1234L, 1,2,3,4);
-        dao.createRelation(12,1);
-        dao.createRelation(13,1);
-        dao.createRelation(14,1);
-        dao.createRelation(15,1);
-        dao.createRelation(16,1);
-        dao.createRelation(17,1);
+        dao.createRelation(1234L, Lists.<Long>newArrayList(1L, 2L, 3L, 4L));
+        dao.createRelation(12,Lists.<Long>newArrayList(1L));
+        dao.createRelation(13,Lists.<Long>newArrayList(1L));
+        dao.createRelation(14,Lists.<Long>newArrayList(1L));
+        dao.createRelation(15,Lists.<Long>newArrayList(1L));
+        dao.createRelation(16,Lists.<Long>newArrayList(1L));
+        dao.createRelation(17,Lists.<Long>newArrayList(1L));
     }
 
     @Test

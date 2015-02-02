@@ -78,7 +78,7 @@ public class RelationDao {
      *
      * @param isGetAttentions true：获取关注的人 false：获取粉丝
      */
-    public Attention getAttentions(final long userId, final long lastId, final int length, final boolean isGetAttentions) {
+    public List<Attention> getAttentions(final long userId, final long lastId, final int length, final boolean isGetAttentions) {
         if (userId < 0) {
             throw new BizException(RELATION_ERROR_USERID_IS_NEGATIVE);
         }
@@ -95,17 +95,20 @@ public class RelationDao {
             if (length > 0) {
                 sql.append(" limit ").append(length);
             }
-            return jdbcTemplate.query(sql.toString(), new ResultSetExtractor<Attention>() {
+            return jdbcTemplate.query(sql.toString(), new ResultSetExtractor<List<Attention>>() {
                 @Override
-                public Attention extractData(ResultSet rs) throws SQLException, DataAccessException {
-                    Attention attention = new Attention();
-                    attention.setAttention(isGetAttentions);
-                    attention.setUserIds(Lists.<Long>newLinkedList());
+                public List<Attention> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                    List<Attention> result = Lists.newArrayListWithCapacity(length);
                     while (rs.next()) {
-                        attention.setLastId(rs.getLong(1));
-                        attention.getUserIds().add(rs.getLong(2));
+                        Attention attention = new Attention();
+                        attention.setAttention(isGetAttentions);
+                        attention.setSourceUserId(userId);
+                        attention.setId(rs.getLong("id"));
+                        attention.setDstUserId(rs.getLong("dst_user"));
+                        attention.setCreateDate(rs.getDate("create_date"));
+                        result.add(attention);
                     }
-                    return attention;
+                    return result;
                 }
             }, userId);
         } catch (DataAccessException e) {
