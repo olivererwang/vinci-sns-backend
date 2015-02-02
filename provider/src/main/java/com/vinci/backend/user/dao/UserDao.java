@@ -8,30 +8,28 @@ import com.vinci.common.base.exception.ErrorCode;
 import com.vinci.common.base.exception.ErrorType;
 import com.vinci.common.base.exception.ModelType;
 import com.vinci.common.web.util.JsonUtils;
-
-import static com.vinci.backend.Constants.*;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.sql.*;
 import java.util.Collections;
 import java.util.List;
 
+import static com.vinci.backend.Constants.USER_DATABASE_NAME;
+
 /**
  * 用户表（user）的内容操作
  * Created by tim@vinci on 15-1-29.
  */
 
-@Component
+@Repository
 public class UserDao {
     @Resource
     private JdbcTemplate jdbcTemplate;

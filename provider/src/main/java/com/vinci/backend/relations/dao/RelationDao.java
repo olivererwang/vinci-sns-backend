@@ -2,26 +2,25 @@ package com.vinci.backend.relations.dao;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-
-import static com.vinci.backend.Constants.*;
-
 import com.vinci.backend.relations.model.Attention;
 import com.vinci.common.base.exception.BizException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.vinci.backend.Constants.*;
+
 /**
  * Created by tim@vinci on 15-1-30.
  */
-@Component
+@Repository
 public class RelationDao {
     @Resource
     private JdbcTemplate jdbcTemplate;

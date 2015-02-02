@@ -5,23 +5,27 @@ import com.vinci.common.base.exception.BizException;
 import com.vinci.common.base.exception.ErrorCode;
 import com.vinci.common.base.exception.ErrorType;
 import com.vinci.common.base.exception.ModelType;
-import static com.vinci.backend.Constants.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import static com.vinci.backend.Constants.USER_DATABASE_NAME;
 
 /**
  * 对Device表进行的基本操作
  * Created by tim@vinci on 15-1-28.
  */
-@Component
+@Repository
 public class DeviceDao {
     @Resource
     private JdbcTemplate jdbcTemplate;
