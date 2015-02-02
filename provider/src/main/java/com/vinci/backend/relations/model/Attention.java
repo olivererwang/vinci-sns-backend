@@ -9,11 +9,23 @@ import java.util.List;
  */
 public class Attention implements Serializable{
 
+    public Attention() {
+    }
+
+    public Attention(boolean isAttention) {
+        this.isAttention = isAttention;
+    }
+
     /**
      * true： 关注
      * false： 粉丝
      */
     private boolean isAttention = true;
+
+    /**
+     * 总共的关注或粉丝数
+     */
+    private int totalCount;
     /**
      * 分页用id
      */
@@ -46,10 +58,19 @@ public class Attention implements Serializable{
         this.userIds = userIds;
     }
 
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
+
     @Override
     public String toString() {
         return "Attention{" +
                 "isAttention=" + isAttention +
+                ", totalCount=" + totalCount +
                 ", lastId=" + lastId +
                 ", userIds=" + userIds +
                 '}';
