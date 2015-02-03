@@ -86,6 +86,12 @@ public abstract class BaseController {
         return convertErrorCode(ERROR_Missing_Servlet_Request_Parameter.copy(e.getParameterName()));
     }
 
+    protected void checkLogin() {
+        if (queryUserInfo() == null) {
+            throw new BizException(ERROR_NEED_LOGIN);
+        }
+    }
+
     /**
      * 返回当前线程用户上下文
      *

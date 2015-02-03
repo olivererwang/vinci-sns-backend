@@ -1,5 +1,7 @@
 package com.vinci.backend.web.filter;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Sets;
 import com.vinci.backend.domain.user.model.UserModel;
 import com.vinci.backend.domain.user.service.UserService;
 import com.vinci.backend.web.user.UserContext;
@@ -17,7 +19,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * 用户信息过滤器
@@ -27,6 +31,7 @@ public class UserInfoFilter extends OncePerRequestFilter {
 
     @Resource
     private UserService userService;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,

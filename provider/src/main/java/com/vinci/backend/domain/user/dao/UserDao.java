@@ -2,6 +2,7 @@ package com.vinci.backend.domain.user.dao;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.vinci.backend.domain.user.model.UserModel;
 import com.vinci.common.base.exception.BizException;
 import com.vinci.common.web.util.JsonUtils;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
 import java.sql.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static com.vinci.backend.domain.Constants.*;
 
@@ -61,20 +63,20 @@ public class UserDao {
         }
     }
 
-    public List<UserModel> getUser(final List<Long> users) {
+    public Map<Long, UserModel> getUser(final List<Long> users) {
         if (users == null || users.size() == 0) {
-            return Collections.emptyList();
+            return Collections.emptyMap();
         }
         try {
-            List<UserModel> info = jdbcTemplate.query("SELECT id,userid,device_imei,nick_name,version,extra,create_date,update_time FROM "
+            Map<Long, UserModel> info = jdbcTemplate.query("SELECT id,userid,device_imei,nick_name,version,extra,create_date,update_time FROM "
                             + USER_DATABASE_NAME + ".user WHERE userid in ("+ Joiner.on(',').skipNulls().join(users)+")",
-                    new ResultSetExtractor<List<UserModel>>() {
+                    new ResultSetExtractor<Map<Long, UserModel>>() {
                         @Override
-                        public List<UserModel> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                        public Map<Long, UserModel> extractData(ResultSet rs) throws SQLException, DataAccessException {
                             if (rs == null) {
-                                return Collections.emptyList();
+                                return Collections.emptyMap();
                             }
-                            List<UserModel> list = Lists.newArrayListWithCapacity(users.size());
+                            Map<Long, UserModel> result = Maps.newHashMapWithExpectedSize(users.size());
                             while (rs.next()) {
                                 UserModel info = new UserModel();
                                 info.setId(rs.getLong("id"));
@@ -84,13 +86,13 @@ public class UserDao {
                                 info.setUserSettings(JsonUtils.decode(rs.getString("extra"), UserModel.UserSettings.class));
                                 info.setCreateDate(rs.getTimestamp("create_date"));
                                 info.setUpdateTime(rs.getTimestamp("update_time"));
-                                list.add(info);
+                                result.put(info.getId(), info);
                             }
-                            return list;
+                            return result;
                         }
                     });
             if (info == null) {
-                return Collections.emptyList();
+                return Collections.emptyMap();
             }
             return info;
         } catch (DataAccessException e) {

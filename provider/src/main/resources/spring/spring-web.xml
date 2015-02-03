@@ -10,6 +10,9 @@
 
     <!-- 用户登录的filter -->
     <bean id="userInfoFilter" class="com.vinci.backend.web.filter.UserInfoFilter">
+        <property name="ignoreLoginUrl">
+            /user/create,/user/getUser,/user/getUsers
+        </property>
     </bean>
 
     <!-- Only needed because we install custom converters to support the examples in the org.springframewok.samples.mvc.convert package -->

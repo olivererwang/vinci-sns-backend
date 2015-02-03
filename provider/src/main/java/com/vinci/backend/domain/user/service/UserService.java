@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 import static com.vinci.backend.domain.Constants.*;
 
@@ -79,8 +80,8 @@ public class UserService {
     /**
      * 通过userID获取用户资料
      */
-    public List<UserModel> getUserByUserID(final List<Long> userId) {
-        return new BizTemplate<List<UserModel>>("getUserByUserIDList") {
+    public Map<Long, UserModel> getUserByUserID(final List<Long> userId) {
+        return new BizTemplate<Map<Long, UserModel>>("getUserByUserIDList") {
 
             @Override
             protected void checkParams() throws BizException {
@@ -88,7 +89,7 @@ public class UserService {
             }
 
             @Override
-            protected List<UserModel> process() throws Exception {
+            protected Map<Long, UserModel> process() throws Exception {
                 return userDao.getUser(userId);
             }
         }.execute();
@@ -111,7 +112,8 @@ public class UserService {
                     throw new BizException(ERROR_DEVICE_IS_NOT_EXIST);
                 }
                 if (deviceInfo.getUserId() <= 0) {
-                    throw new BizException(ERROR_DEVICE_IS_NOT_BIND);
+                    //没有被绑定
+                    return null;
                 }
                 return userDao.getUser(deviceInfo.getUserId());
             }
