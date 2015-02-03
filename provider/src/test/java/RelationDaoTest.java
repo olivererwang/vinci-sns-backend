@@ -1,5 +1,5 @@
 import com.google.common.collect.Lists;
-import com.vinci.backend.relations.dao.RelationDao;
+import com.vinci.backend.domain.relations.dao.RelationDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

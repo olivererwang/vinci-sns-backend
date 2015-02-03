@@ -1,5 +1,5 @@
-import com.vinci.backend.user.dao.DeviceDao;
-import com.vinci.backend.user.model.DeviceInfo;
+import com.vinci.backend.domain.user.dao.DeviceDao;
+import com.vinci.backend.domain.user.model.DeviceInfo;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,4 +1,3 @@
-import com.vinci.backend.user.dao.DeviceDao;
 import com.vinci.common.base.i18n.I18NResource;
 import com.vinci.common.base.i18n.MessageType;
 import org.junit.Test;

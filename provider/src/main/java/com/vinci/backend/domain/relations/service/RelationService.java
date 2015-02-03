@@ -1,11 +1,11 @@
-package com.vinci.backend.relations.service;
+package com.vinci.backend.domain.relations.service;
 
 import com.google.common.collect.Lists;
-import com.vinci.backend.relations.dao.RelationDao;
-import com.vinci.backend.relations.model.Attention;
-import com.vinci.backend.user.model.UserModel;
-import com.vinci.backend.user.service.UserService;
-import com.vinci.backend.util.BizTemplate;
+import com.vinci.backend.domain.relations.dao.RelationDao;
+import com.vinci.backend.domain.relations.model.Attention;
+import com.vinci.backend.domain.user.model.UserModel;
+import com.vinci.backend.domain.user.service.UserService;
+import com.vinci.backend.domain.BizTemplate;
 import com.vinci.common.base.exception.BizException;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.vinci.backend.Constants.*;
+import static com.vinci.backend.domain.Constants.*;
 
 /**
  * 关注关系的service

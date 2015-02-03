@@ -1,6 +1,5 @@
-package com.vinci.backend.user.model;
+package com.vinci.backend.domain.user.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.vinci.common.web.util.JsonUtils;

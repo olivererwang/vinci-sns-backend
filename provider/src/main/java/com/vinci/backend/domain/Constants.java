@@ -1,4 +1,4 @@
-package com.vinci.backend;
+package com.vinci.backend.domain;
 
 import com.vinci.common.base.exception.ErrorCode;
 import com.vinci.common.base.exception.ErrorType;

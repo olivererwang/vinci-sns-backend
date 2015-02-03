@@ -1,4 +1,4 @@
-package com.vinci.backend.feed.model;
+package com.vinci.backend.domain.feed.model;
 
 import java.io.Serializable;
 import java.util.Date;

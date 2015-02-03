@@ -1,6 +1,6 @@
-package com.vinci.backend.user.dao;
+package com.vinci.backend.domain.user.dao;
 
-import com.vinci.backend.user.model.DeviceInfo;
+import com.vinci.backend.domain.user.model.DeviceInfo;
 import com.vinci.common.base.exception.BizException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
@@ -16,7 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.vinci.backend.Constants.*;
+import static com.vinci.backend.domain.Constants.*;
 
 /**
  * 对Device表进行的基本操作

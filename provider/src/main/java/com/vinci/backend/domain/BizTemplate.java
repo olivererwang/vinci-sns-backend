@@ -1,4 +1,4 @@
-package com.vinci.backend.util;
+package com.vinci.backend.domain;
 
 import com.vinci.common.base.exception.BizException;
 import com.vinci.common.base.exception.ErrorCode;

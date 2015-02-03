@@ -1,7 +1,7 @@
 package com.vinci.backend.web.filter;
 
-import com.vinci.backend.user.model.UserModel;
-import com.vinci.backend.user.service.UserService;
+import com.vinci.backend.domain.user.model.UserModel;
+import com.vinci.backend.domain.user.service.UserService;
 import com.vinci.backend.web.user.UserContext;
 import com.vinci.backend.web.user.UserInfo;
 import com.vinci.common.base.monitor.QMonitor;

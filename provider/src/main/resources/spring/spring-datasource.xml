@@ -63,7 +63,7 @@
     <!--</bean>-->
 
     <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
-    <!--<property name="basePackage" value="com.vinci.backend.user.dao"/>-->
+    <!--<property name="basePackage" value="com.vinci.backend.domain.user.dao"/>-->
     <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
     <!--</bean>-->
 

@@ -1,9 +1,9 @@
-package com.vinci.backend.feed.dao;
+package com.vinci.backend.domain.feed.dao;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.vinci.backend.feed.model.FeedModel;
-import com.vinci.backend.feed.model.TimelineModel;
+import com.vinci.backend.domain.feed.model.FeedModel;
+import com.vinci.backend.domain.feed.model.TimelineModel;
 import com.vinci.common.base.exception.BizException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.vinci.backend.Constants.*;
+import static com.vinci.backend.domain.Constants.*;
 /**
  * 每个人的timeline表的dao
  * Created by tim@vinci on 15-2-2.

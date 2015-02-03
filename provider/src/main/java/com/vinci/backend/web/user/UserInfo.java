@@ -1,6 +1,6 @@
 package com.vinci.backend.web.user;
 
-import com.vinci.backend.user.model.UserModel;
+import com.vinci.backend.domain.user.model.UserModel;
 
 import java.io.Serializable;
 

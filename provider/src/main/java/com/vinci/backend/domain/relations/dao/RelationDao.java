@@ -1,8 +1,8 @@
-package com.vinci.backend.relations.dao;
+package com.vinci.backend.domain.relations.dao;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.vinci.backend.relations.model.Attention;
+import com.vinci.backend.domain.relations.model.Attention;
 import com.vinci.common.base.exception.BizException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.vinci.backend.Constants.*;
+import static com.vinci.backend.domain.Constants.*;
 
 /**
  * Created by tim@vinci on 15-1-30.

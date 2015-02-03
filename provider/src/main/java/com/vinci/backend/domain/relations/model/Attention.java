@@ -1,8 +1,7 @@
-package com.vinci.backend.relations.model;
+package com.vinci.backend.domain.relations.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 一个关注

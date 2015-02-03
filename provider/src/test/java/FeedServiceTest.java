@@ -1,12 +1,11 @@
 import com.google.common.collect.Lists;
-import com.vinci.backend.feed.model.FeedModel;
-import com.vinci.backend.feed.service.FeedService;
-import com.vinci.backend.relations.service.RelationService;
-import com.vinci.backend.user.model.UserModel;
+import com.vinci.backend.domain.feed.model.FeedModel;
+import com.vinci.backend.domain.feed.service.FeedService;
+import com.vinci.backend.domain.relations.service.RelationService;
+import com.vinci.backend.domain.user.model.UserModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,9 +1,9 @@
-package com.vinci.backend.feed.dao;
+package com.vinci.backend.domain.feed.dao;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.vinci.backend.feed.model.FeedModel;
+import com.vinci.backend.domain.feed.model.FeedModel;
 import com.vinci.common.base.exception.BizException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.vinci.backend.Constants.*;
+import static com.vinci.backend.domain.Constants.*;
 
 /**
  * 原始发的feed内容的表

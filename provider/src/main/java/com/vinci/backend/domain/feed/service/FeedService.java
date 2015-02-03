@@ -1,15 +1,15 @@
-package com.vinci.backend.feed.service;
+package com.vinci.backend.domain.feed.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.vinci.backend.feed.dao.FeedDao;
-import com.vinci.backend.feed.dao.TimelineDao;
-import com.vinci.backend.feed.model.FeedModel;
-import com.vinci.backend.feed.model.TimelineModel;
-import com.vinci.backend.relations.model.Attention;
-import com.vinci.backend.relations.service.RelationService;
-import com.vinci.backend.user.model.UserModel;
-import com.vinci.backend.util.BizTemplate;
+import com.vinci.backend.domain.feed.dao.FeedDao;
+import com.vinci.backend.domain.feed.dao.TimelineDao;
+import com.vinci.backend.domain.feed.model.FeedModel;
+import com.vinci.backend.domain.feed.model.TimelineModel;
+import com.vinci.backend.domain.relations.model.Attention;
+import com.vinci.backend.domain.relations.service.RelationService;
+import com.vinci.backend.domain.user.model.UserModel;
+import com.vinci.backend.domain.BizTemplate;
 import com.vinci.common.base.exception.BizException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.*;
 
-import static com.vinci.backend.Constants.ERROR_FEED_CONTENT_NULL;
-import static com.vinci.backend.Constants.ERROR_USERID_IS_EMPTY;
+import static com.vinci.backend.domain.Constants.ERROR_FEED_CONTENT_NULL;
+import static com.vinci.backend.domain.Constants.ERROR_USERID_IS_EMPTY;
 /**
  * 分享内容相关的操作
  * Created by tim@vinci on 15-2-2.

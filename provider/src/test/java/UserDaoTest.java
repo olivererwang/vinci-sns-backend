@@ -1,5 +1,5 @@
-import com.vinci.backend.user.dao.UserDao;
-import com.vinci.backend.user.model.UserModel;
+import com.vinci.backend.domain.user.dao.UserDao;
+import com.vinci.backend.domain.user.model.UserModel;
 import org.junit.Before;
 import org.junit.Test;
 

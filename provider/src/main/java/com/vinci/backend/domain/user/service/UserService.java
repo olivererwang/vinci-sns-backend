@@ -1,10 +1,10 @@
-package com.vinci.backend.user.service;
+package com.vinci.backend.domain.user.service;
 
-import com.vinci.backend.user.dao.DeviceDao;
-import com.vinci.backend.user.dao.UserDao;
-import com.vinci.backend.user.model.DeviceInfo;
-import com.vinci.backend.user.model.UserModel;
-import com.vinci.backend.util.BizTemplate;
+import com.vinci.backend.domain.user.dao.DeviceDao;
+import com.vinci.backend.domain.user.dao.UserDao;
+import com.vinci.backend.domain.user.model.DeviceInfo;
+import com.vinci.backend.domain.user.model.UserModel;
+import com.vinci.backend.domain.BizTemplate;
 import com.vinci.common.base.exception.BizException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static com.vinci.backend.Constants.*;
+import static com.vinci.backend.domain.Constants.*;
 
 /**
  * Created by tim@vinci on 15-1-30.

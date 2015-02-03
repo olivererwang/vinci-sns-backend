@@ -1,4 +1,4 @@
-package com.vinci.backend.user.model;
+package com.vinci.backend.domain.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

@@ -1,8 +1,8 @@
-package com.vinci.backend.user.dao;
+package com.vinci.backend.domain.user.dao;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.vinci.backend.user.model.UserModel;
+import com.vinci.backend.domain.user.model.UserModel;
 import com.vinci.common.base.exception.BizException;
 import com.vinci.common.web.util.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +19,7 @@ import java.sql.*;
 import java.util.Collections;
 import java.util.List;
 
-import static com.vinci.backend.Constants.*;
+import static com.vinci.backend.domain.Constants.*;
 
 /**
  * 用户表（user）的内容操作
