@@ -2,8 +2,6 @@ package com.vinci.backend.user.dao;
 
 import com.vinci.backend.user.model.DeviceInfo;
 import com.vinci.common.base.exception.BizException;
-import com.vinci.common.base.exception.ErrorCode;
-import com.vinci.common.base.exception.ErrorType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
@@ -18,7 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.vinci.backend.Constants.USER_DATABASE_NAME;
+import static com.vinci.backend.Constants.*;
 
 /**
  * 对Device表进行的基本操作
@@ -26,12 +24,13 @@ import static com.vinci.backend.Constants.USER_DATABASE_NAME;
  */
 @Repository
 public class DeviceDao {
+
     @Resource
     private JdbcTemplate jdbcTemplate;
 
     public DeviceInfo getDeviceInfoById(long id) {
         if (id <= 0) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 1, "要查询的设备id为负值"));
+            throw new BizException(ERROR_DEVICE_IS_NEGATIVE);
         }
         try {
             DeviceInfo info = jdbcTemplate.query("SELECT id,imei,mac_addr,userid,create_date,update_time FROM "+USER_DATABASE_NAME+".device WHERE id=?", new ResultSetExtractor<DeviceInfo>() {
@@ -54,21 +53,21 @@ public class DeviceDao {
                 }
             }, id);
             if (info == null || info.getId() != id) {
-                throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
+                throw new BizException(ERROR_DEVICE_IS_NOT_EXIST);
             }
             return info;
         } catch (DataAccessException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误"));
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
 
     public DeviceInfo getDeviceInfo(String imei, String macAddr) {
         if (StringUtils.isEmpty(imei)) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 2, "IMEI号为空"));
+            throw new BizException(ERROR_IMEI_IS_EMPTY);
         }
         if (StringUtils.isEmpty(macAddr)) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 3, "MAC地址为空"));
+            throw new BizException(ERROR_MAC_ADDR_IS_EMPTY);
         }
         try {
             DeviceInfo info = jdbcTemplate.query("SELECT id,imei,mac_addr,userid,create_date,update_time FROM "+USER_DATABASE_NAME+".device WHERE imei=? AND mac_addr=?",
@@ -92,11 +91,11 @@ public class DeviceDao {
                         }
                     }, imei, macAddr);
             if (info == null) {
-                throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
+                throw new BizException(ERROR_DEVICE_IS_NOT_EXIST);
             }
             return info;
         } catch (DataAccessException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误"));
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
@@ -124,19 +123,19 @@ public class DeviceDao {
                     }, userID );
             return info;
         } catch (DataAccessException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误"));
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
     public void insert(final DeviceInfo deviceInfo) {
         if (deviceInfo == null || deviceInfo.getId() != 0) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 4, "要插入的设备号有误"));
+            throw new BizException(ERROR_DEVICE_ID_INVALID);
         }
         if (StringUtils.isEmpty(deviceInfo.getImei())) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 5, "要插入的设备号有误，IMEI号为空"));
+            throw new BizException(ERROR_IMEI_IS_EMPTY);
         }
         if (StringUtils.isEmpty(deviceInfo.getMacAddr())) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 6, "要插入的设备号有误，MAC地址为空"));
+            throw new BizException(ERROR_MAC_ADDR_IS_EMPTY);
         }
         try {
             int rowCount = jdbcTemplate.update(new PreparedStatementCreator() {
@@ -150,37 +149,37 @@ public class DeviceDao {
                 }
             });
             if (rowCount != 1) {
-                throw new BizException(new ErrorCode(ErrorType.unknownErrorType, 1, "未知错误"));
+                throw new BizException(ERROR_UNKNOWN_ERROR);
             }
         } catch (DuplicateKeyException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.dataConventionErrorType, 2, "插入的设备号失败，设备号已存在"));
+            throw new BizException(e, ERROR_DEVICE_HAS_EXIST);
         } catch (DataAccessException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误"));
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
 
     }
 
     public void updateBindUser(final DeviceInfo deviceInfo) {
         if (deviceInfo == null || deviceInfo.getId() == 0) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 7, "绑定设备参数为空"));
+            throw new BizException(ERROR_DEVICE_ID_INVALID);
         }
         if (StringUtils.isEmpty(deviceInfo.getImei())) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 8, "绑定设备参数有误，IMEI号为空"));
+            throw new BizException(ERROR_IMEI_IS_EMPTY);
         }
         if (StringUtils.isEmpty(deviceInfo.getMacAddr())) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 9, "绑定设备参数有误，MAC地址为空"));
+            throw new BizException(ERROR_MAC_ADDR_IS_EMPTY);
         }
         if (deviceInfo.getUserId() <= 0) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 10, "绑定设备参数有误，userID为空"));
+            throw new BizException(ERROR_USERID_IS_EMPTY);
         }
         try {
             int rowCount = jdbcTemplate.update("UPDATE "+USER_DATABASE_NAME+".device SET userid=? WHERE id=? AND imei=? AND mac_addr=?",
                     deviceInfo.getUserId(), deviceInfo.getId(), deviceInfo.getImei(), deviceInfo.getMacAddr());
             if (rowCount == 0) {
-                throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
+                throw new BizException(ERROR_DEVICE_IS_NOT_EXIST);
             }
         } catch (DataAccessException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误"));
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 }

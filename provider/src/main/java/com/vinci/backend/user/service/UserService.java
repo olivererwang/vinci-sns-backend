@@ -6,8 +6,6 @@ import com.vinci.backend.user.model.DeviceInfo;
 import com.vinci.backend.user.model.UserModel;
 import com.vinci.backend.util.BizTemplate;
 import com.vinci.common.base.exception.BizException;
-import com.vinci.common.base.exception.ErrorCode;
-import com.vinci.common.base.exception.ErrorType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -18,11 +16,14 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.vinci.backend.Constants.*;
+
 /**
  * Created by tim@vinci on 15-1-30.
  */
 @Service
 public class UserService {
+
     @Resource
     private UserDao userDao;
     @Resource
@@ -41,7 +42,7 @@ public class UserService {
             @Override
             protected void checkParams() throws BizException {
                 if (StringUtils.isEmpty(nickname)) {
-                    throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 22, "昵称为空"));
+                    throw new BizException(ERROR_NICKNAME_IS_EMPTY);
                 }
             }
 
@@ -107,10 +108,10 @@ public class UserService {
             protected UserModel process() throws Exception {
                 DeviceInfo deviceInfo = deviceDao.getDeviceInfo(IMEI, macAddr);
                 if (deviceInfo == null) {
-                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
+                    throw new BizException(ERROR_DEVICE_IS_NOT_EXIST);
                 }
                 if (deviceInfo.getUserId() <= 0) {
-                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 21, "设备未绑定用户"));
+                    throw new BizException(ERROR_DEVICE_IS_NOT_BIND);
                 }
                 return userDao.getUser(deviceInfo.getUserId());
             }
@@ -133,17 +134,17 @@ public class UserService {
             protected Boolean process() throws Exception {
                 DeviceInfo deviceInfo = deviceDao.getDeviceInfo(IMEI, macAddr);
                 if (deviceInfo == null) {
-                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
+                    throw new BizException(ERROR_DEVICE_IS_NOT_EXIST);
                 }
                 if (deviceInfo.getUserId() == userID) {
                     return Boolean.TRUE;
                 }
                 if (deviceDao.getDeviceInfoByBindUser(userID) != null) {
-                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 22, "设备已经被绑定，请解绑后再试"));
+                    throw new BizException(ERROR_DEVICE_HAS_BIND);
                 }
                 UserModel userModel = userDao.getUser(userID);
                 if (userModel == null) {
-                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 11, "用户不存在"));
+                    throw new BizException(ERROR_USER_IS_NOT_EXIST);
                 }
                 deviceInfo.setUserId(userModel.getId());
                 userModel.setDeviceIMEI(deviceInfo.getImei());
@@ -168,14 +169,14 @@ public class UserService {
             protected Boolean process() throws Exception {
                 DeviceInfo deviceInfo = deviceDao.getDeviceInfo(IMEI, macAddr);
                 if (deviceInfo == null) {
-                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
+                    throw new BizException(ERROR_DEVICE_IS_NOT_EXIST);
                 }
                 if (deviceInfo.getUserId() != userID) {
-                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 1, "要设备和当前用户没有绑定"));
+                    throw new BizException(ERROR_DEVICE_IS_NOT_BIND_OF_THAT_USER);
                 }
                 UserModel userModel = userDao.getUser(userID);
                 if (userModel == null) {
-                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 11, "用户不存在"));
+                    throw new BizException(ERROR_USER_IS_NOT_EXIST);
                 }
                 deviceInfo.setUserId(0);
                 userModel.setDeviceIMEI("");
@@ -191,7 +192,7 @@ public class UserService {
             @Override
             protected void checkParams() throws BizException {
                 if (userModel == null) {
-                    throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 23, "要修改的用户设置为空"));
+                    throw new BizException(ERROR_USER_SETTINGS_IS_EMPTY);
                 }
             }
 

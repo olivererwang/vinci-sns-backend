@@ -4,8 +4,6 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.vinci.backend.user.model.UserModel;
 import com.vinci.common.base.exception.BizException;
-import com.vinci.common.base.exception.ErrorCode;
-import com.vinci.common.base.exception.ErrorType;
 import com.vinci.common.web.util.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
@@ -21,7 +19,7 @@ import java.sql.*;
 import java.util.Collections;
 import java.util.List;
 
-import static com.vinci.backend.Constants.USER_DATABASE_NAME;
+import static com.vinci.backend.Constants.*;
 
 /**
  * 用户表（user）的内容操作
@@ -30,6 +28,7 @@ import static com.vinci.backend.Constants.USER_DATABASE_NAME;
 
 @Repository
 public class UserDao {
+
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -57,11 +56,11 @@ public class UserDao {
                         }
                     }, userId);
             if (info == null) {
-                throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 11, "用户不存在"));
+                throw new BizException(ERROR_USER_IS_NOT_EXIST);
             }
             return info;
         } catch (DataAccessException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误"));
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
@@ -98,24 +97,24 @@ public class UserDao {
             }
             return info;
         } catch (DataAccessException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误"));
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
     public void modifyUserNickName(long userId, String nickName) {
         if (StringUtils.isEmpty(nickName)) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 22, "昵称为空"));
+            throw new BizException(ERROR_NICKNAME_IS_EMPTY);
         }
         try {
             int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET nick_name=? WHERE userid=?",
                     nickName,userId);
             if (rowCount == 0) {
-                throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 11, "用户不存在"));
+                throw new BizException(ERROR_USER_IS_NOT_EXIST);
             }
         } catch (DuplicateKeyException e) {
-            throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 12, "昵称已经被使用"));
+            throw new BizException(ERROR_NICKNAME_HAS_USED);
         } catch (DataAccessException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误"));
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
@@ -124,34 +123,34 @@ public class UserDao {
             int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET device_imei=? WHERE userid=?",
                     deviceIMEI,userId);
             if (rowCount == 0) {
-                throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 11, "用户不存在"));
+                throw new BizException(ERROR_USER_IS_NOT_EXIST);
             }
         } catch (DataAccessException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误"));
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
     public void modifyUserSettings(long userId, UserModel.UserSettings userSettings , int version) {
         if (userSettings == null) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 23, "要修改的用户设置为空"));
+            throw new BizException(ERROR_USER_SETTINGS_IS_EMPTY);
         }
         try {
             int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET extra=?,version=version+1 WHERE userid=? and version=?",
                     userSettings.toString(),userId,version);
             if (rowCount == 0) {
-                throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 13, "用户设置已经被修改，有冲突"));
+                throw new BizException(ERROR_USER_SETTINGS_UPDATE_CONFLICT);
             }
         } catch (DataAccessException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误"));
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
     public long newUser(final UserModel userModel) {
         if (userModel == null) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 24, "要插入的用户数据为空"));
+            throw new BizException(ERROR_USER_SETTINGS_IS_EMPTY);
         }
         if (StringUtils.isEmpty(userModel.getNickName())) {
-            throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 22, "昵称为空"));
+            throw new BizException(ERROR_NICKNAME_IS_EMPTY);
         }
         if (userModel.getUserSettings() == null) {
             userModel.setUserSettings(new UserModel.UserSettings());
@@ -170,13 +169,13 @@ public class UserDao {
                 }
             },keyHolder);
             if (rowCount != 1) {
-                throw new BizException(new ErrorCode(ErrorType.unknownErrorType, 1, "未知错误"));
+                throw new BizException(ERROR_UNKNOWN_ERROR);
             }
             return keyHolder.getKey().longValue();
         } catch (DuplicateKeyException e) {
-            throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 12, "昵称已经被使用"));
+            throw new BizException(ERROR_NICKNAME_HAS_USED);
         } catch (DataAccessException e) {
-            throw new BizException(e, new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误"));
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 }
