@@ -19,5 +19,6 @@ public class WebConstants {
     public final static ErrorCode ERROR_USER_IS_NOT_EXIST = new ErrorCode(ErrorType.WebArgumentErrorType, 4, "用户不存在");
     public final static ErrorCode ERROR_USER_ID_ARGUMENT_INVALID = new ErrorCode(ErrorType.WebArgumentErrorType, 5, "传入的userid错误");
     public final static ErrorCode ERROR_USER_ID_ARGUMENT_IS_TOO_LONG = new ErrorCode(ErrorType.WebArgumentErrorType, 6, "最大获取用户数" + MAX_LENGTH_OF_GET_USER_BY_IDS);
+    public final static ErrorCode ERROR_FEED_IS_NULL = new ErrorCode(ErrorType.WebArgumentErrorType, 6, "要分享的内容为空");
 
 }

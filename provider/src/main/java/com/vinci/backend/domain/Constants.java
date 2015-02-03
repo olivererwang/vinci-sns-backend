@@ -23,6 +23,7 @@ public class Constants {
     public static final ErrorCode ERROR_FOLLOWER_ID_LENGTH_TOO_MANY = new ErrorCode(ErrorType.ArgumentErrorType, 4, "要关注的人不能超过" + MAX_FOLLOW_LENGTH_ONCE);
     public static final ErrorCode ERROR_FEED_NULL = new ErrorCode(ErrorType.ArgumentErrorType, 5, "分享失败，数据为空");
     public static final ErrorCode ERROR_FEED_CONTENT_NULL = new ErrorCode(ErrorType.ArgumentErrorType, 6, "分享内容为空");
+    public static final ErrorCode ERROR_REF_FEED_IST_NULL = new ErrorCode(ErrorType.ArgumentErrorType, 7, "要引用的分享内容为空");
 
     public static final ErrorCode ERROR_DEVICE_IS_NEGATIVE = new ErrorCode(ErrorType.ArgumentErrorType, 10, "要查询的设备id为负值");
     public static final ErrorCode ERROR_IMEI_IS_EMPTY = new ErrorCode(ErrorType.ArgumentErrorType, 11, "IMEI号为空");

@@ -59,6 +59,7 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
+    @ResponseBody
     public APIResponse<UserModel> getUserById(@RequestParam("userid") long userid) {
         if (userid <= 0) {
             return convertErrorCode(ERROR_USER_IS_NOT_EXIST);

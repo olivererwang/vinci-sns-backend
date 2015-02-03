@@ -17,8 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.*;
 
-import static com.vinci.backend.domain.Constants.ERROR_FEED_CONTENT_NULL;
-import static com.vinci.backend.domain.Constants.ERROR_USERID_IS_EMPTY;
+import static com.vinci.backend.domain.Constants.*;
 /**
  * 分享内容相关的操作
  * Created by tim@vinci on 15-2-2.
@@ -54,6 +53,12 @@ public class FeedService {
             @Override
             protected FeedModel process() throws Exception {
                 feed.setUserid(user.getId());
+                if (feed.getRefFeed() != null) {
+                    Map<Long, FeedModel> refFeeds = feedDao.getFeedById(Sets.newHashSet(feed.getRefFeed().getId()));
+                    if (refFeeds == null || !refFeeds.containsKey(feed.getRefFeed().getId())) {
+                        throw new BizException(ERROR_REF_FEED_IST_NULL);
+                    }
+                }
                 FeedModel newFeed = feedDao.insertFeed(feed);
                 List<Attention> followers = relationService.getAttention(user, 0, 0, false);
                 if (followers == null || followers.size() == 0) {
@@ -67,6 +72,44 @@ public class FeedService {
                 }
                 timelineDao.insertSomeonesTimeline(newFeed, followerIds);
                 return newFeed;
+            }
+        }.execute();
+    }
+
+    public Map<Long, FeedModel> getFeedById(final List<Long> feedIds) {
+        return new BizTemplate<Map<Long, FeedModel>>("getFeedByIds") {
+
+            @Override
+            protected void checkParams() throws BizException {
+
+            }
+
+            @Override
+            protected Map<Long, FeedModel> process() throws Exception {
+                if (feedIds == null || feedIds.size() == 0) {
+                    return Collections.emptyMap();
+                }
+                Map<Long, FeedModel> result = feedDao.getFeedById(Sets.newHashSet(feedIds));
+                if (result == null || result.size() == 0) {
+                    return Collections.emptyMap();
+                }
+                Set<Long> refFeedIds = Sets.newHashSetWithExpectedSize(result.size());
+                for (FeedModel feed : result.values()) {
+                    if (feed == null || feed.getRefFeed() == null) {
+                        continue;
+                    }
+                    refFeedIds.add(feed.getRefFeed().getId());
+                }
+                Map<Long, FeedModel> refFeeds = feedDao.getFeedById(refFeedIds);
+                if (refFeeds != null) {
+                    for (FeedModel feed : result.values()) {
+                        if (feed == null || feed.getRefFeed() == null) {
+                            continue;
+                        }
+                        feed.setRefFeed(refFeeds.get(feed.getRefFeed().getId()));
+                    }
+                }
+                return result;
             }
         }.execute();
     }
