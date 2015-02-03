@@ -3,6 +3,7 @@ package com.vinci.backend.web.user;
 import com.vinci.backend.domain.user.model.UserModel;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * Created by tim@vinci on 15-1-27.
@@ -27,6 +28,8 @@ public class UserInfo implements Serializable{
     private String authToken;
 
     private UserModel user;
+
+    private Locale locale;
 
     /**是否是系统用户，如果是则跳过用户权限校验*/
     private boolean system;
@@ -99,6 +102,14 @@ public class UserInfo implements Serializable{
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     public UserModel getUser() {

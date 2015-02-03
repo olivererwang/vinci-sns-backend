@@ -17,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * 用户信息过滤器
@@ -75,6 +76,18 @@ public class UserInfoFilter extends OncePerRequestFilter {
         userInfo.setUserName(user == null ? "" : user.getNickName());
         userInfo.setUserIp(getUserIp(httpServletRequest));
         userInfo.setVid(findCookieByName(httpServletRequest, "appVersion"));
+        String locale = findCookieByName(httpServletRequest, "locale");
+        if (StringUtils.isEmpty(locale)) {
+            userInfo.setLocale(Locale.SIMPLIFIED_CHINESE);
+        } else {
+            switch (locale) {
+                case "en_US":
+                    userInfo.setLocale(Locale.US);
+                    break;
+                default:
+                    userInfo.setLocale(Locale.SIMPLIFIED_CHINESE);
+            }
+        }
         return userInfo;
     }
 

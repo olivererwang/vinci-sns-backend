@@ -11,6 +11,7 @@ public enum ErrorType {
     databaseErrorType(1020000),
     /** 数据约束(冲突)相关错误，例如唯一索引约束等**/
     dataConventionErrorType(1030000),
+    WebArgumentErrorType(1050000),
     unknownErrorType(9990000);
 
     private final int typeCode;

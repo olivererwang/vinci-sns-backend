@@ -1,6 +1,7 @@
 package com.vinci.common.base.exception;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 public class ErrorCode implements Serializable {
 
@@ -26,8 +27,17 @@ public class ErrorCode implements Serializable {
         
     }
 
+    public ErrorCode copy(String... extraMessage) {
+        ErrorCode errorCode = new ErrorCode(this.errorType, this.code - this.errorType.getTypeCode(), message);
+        if (extraMessage != null && extraMessage.length > 0) {
+            errorCode.setExtraMessage(extraMessage);
+        }
+        return errorCode;
+    }
+
     private int code;
     private String message;
+    private String[] extraMessage;
 
     public int getCode() {
         return code;
@@ -38,7 +48,15 @@ public class ErrorCode implements Serializable {
     }
 
     public String getMessage() {
-        return message;
+        return getMessage(null);
+    }
+
+    public String getMessage(String localeMessage) {
+        String message = (localeMessage == null ? this.message : localeMessage);
+        if (extraMessage == null) {
+            return message;
+        }
+        return String.format(message, extraMessage);
     }
 
     public void setMessage(String message) {
@@ -49,18 +67,21 @@ public class ErrorCode implements Serializable {
         return errorType;
     }
 
+    public String[] getExtraMessage() {
+        return extraMessage;
+    }
+
+    public void setExtraMessage(String[] extraMessage) {
+        this.extraMessage = extraMessage;
+    }
+
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("ErrorCode [code=");
-        builder.append(code);
-        builder.append(", message=");
-        builder.append(message);
-        builder.append("]");
-        return builder.toString();
+        return "ErrorCode [code=" + code + ", message=" + getMessage() + "]";
     }
 
     public boolean isCritical() {
         return (getErrorType() == ErrorType.unknownErrorType || getErrorType() == ErrorType.databaseErrorType);
     }
+
 }
