@@ -8,8 +8,6 @@ import com.vinci.backend.util.BizTemplate;
 import com.vinci.common.base.exception.BizException;
 import com.vinci.common.base.exception.ErrorCode;
 import com.vinci.common.base.exception.ErrorType;
-import com.vinci.common.base.exception.ModelType;
-import com.vinci.common.web.util.ApplicationContextUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by tim@vinci on 15-1-30.
@@ -39,12 +36,12 @@ public class UserService {
      * 新建用户
      */
     public UserModel createUser(final String nickname, final UserModel.UserSettings userSettings) {
-        return new BizTemplate<UserModel>(ModelType.user, "createUser") {
+        return new BizTemplate<UserModel>("createUser") {
 
             @Override
             protected void checkParams() throws BizException {
                 if (StringUtils.isEmpty(nickname)) {
-                    throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 22, "昵称为空"));
+                    throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 22, "昵称为空"));
                 }
             }
 
@@ -64,7 +61,7 @@ public class UserService {
      * 通过userID获取用户资料
      */
     public UserModel getUserByUserID(final long userId) {
-        return new BizTemplate<UserModel>(ModelType.user, "getUserByUserID") {
+        return new BizTemplate<UserModel>("getUserByUserID") {
 
             @Override
             protected void checkParams() throws BizException {
@@ -82,7 +79,7 @@ public class UserService {
      * 通过userID获取用户资料
      */
     public List<UserModel> getUserByUserID(final List<Long> userId) {
-        return new BizTemplate<List<UserModel>>(ModelType.user, "getUserByUserIDList") {
+        return new BizTemplate<List<UserModel>>("getUserByUserIDList") {
 
             @Override
             protected void checkParams() throws BizException {
@@ -99,7 +96,7 @@ public class UserService {
      * 通过设备号获取绑定用户
      */
     public UserModel getUserByIMEI(final String IMEI, final String macAddr) {
-        return new BizTemplate<UserModel>(ModelType.user, "getUserByDeviceID") {
+        return new BizTemplate<UserModel>("getUserByDeviceID") {
 
             @Override
             protected void checkParams() throws BizException {
@@ -110,10 +107,10 @@ public class UserService {
             protected UserModel process() throws Exception {
                 DeviceInfo deviceInfo = deviceDao.getDeviceInfo(IMEI, macAddr);
                 if (deviceInfo == null) {
-                    throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
+                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
                 }
                 if (deviceInfo.getUserId() <= 0) {
-                    throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 21, "设备未绑定用户"));
+                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 21, "设备未绑定用户"));
                 }
                 return userDao.getUser(deviceInfo.getUserId());
             }
@@ -125,7 +122,7 @@ public class UserService {
      * 绑定一个设备
      */
     public boolean bindDevice(final long userID, final String IMEI, final String macAddr) {
-        return new BizTemplate<Boolean>(ModelType.user, "bindDevice") {
+        return new BizTemplate<Boolean>("bindDevice") {
 
             @Override
             protected void checkParams() throws BizException {
@@ -136,17 +133,17 @@ public class UserService {
             protected Boolean process() throws Exception {
                 DeviceInfo deviceInfo = deviceDao.getDeviceInfo(IMEI, macAddr);
                 if (deviceInfo == null) {
-                    throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
+                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
                 }
                 if (deviceInfo.getUserId() == userID) {
                     return Boolean.TRUE;
                 }
                 if (deviceDao.getDeviceInfoByBindUser(userID) != null) {
-                    throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 22, "设备已经被绑定，请解绑后再试"));
+                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 22, "设备已经被绑定，请解绑后再试"));
                 }
                 UserModel userModel = userDao.getUser(userID);
                 if (userModel == null) {
-                    throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 11, "用户不存在"));
+                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 11, "用户不存在"));
                 }
                 deviceInfo.setUserId(userModel.getId());
                 userModel.setDeviceIMEI(deviceInfo.getImei());
@@ -160,7 +157,7 @@ public class UserService {
      * 解绑一个设备
      */
     public boolean unbindDevice(final long userID, final String IMEI, final String macAddr) {
-        return new BizTemplate<Boolean>(ModelType.user, "unbindDevice") {
+        return new BizTemplate<Boolean>("unbindDevice") {
 
             @Override
             protected void checkParams() throws BizException {
@@ -171,14 +168,14 @@ public class UserService {
             protected Boolean process() throws Exception {
                 DeviceInfo deviceInfo = deviceDao.getDeviceInfo(IMEI, macAddr);
                 if (deviceInfo == null) {
-                    throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
+                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 1, "不存在这个设备号"));
                 }
                 if (deviceInfo.getUserId() != userID) {
-                    throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 1, "要设备和当前用户没有绑定"));
+                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 1, "要设备和当前用户没有绑定"));
                 }
                 UserModel userModel = userDao.getUser(userID);
                 if (userModel == null) {
-                    throw new BizException(new ErrorCode(ModelType.user, ErrorType.dataConventionErrorType, 11, "用户不存在"));
+                    throw new BizException(new ErrorCode(ErrorType.dataConventionErrorType, 11, "用户不存在"));
                 }
                 deviceInfo.setUserId(0);
                 userModel.setDeviceIMEI("");
@@ -189,12 +186,12 @@ public class UserService {
     }
 
     public void updateUserSettings(final UserModel userModel) {
-        new BizTemplate<Boolean>(ModelType.user, "unbindDevice") {
+        new BizTemplate<Boolean>("unbindDevice") {
 
             @Override
             protected void checkParams() throws BizException {
                 if (userModel == null) {
-                    throw new BizException(new ErrorCode(ModelType.user, ErrorType.ArgumentErrorType, 23, "要修改的用户设置为空"));
+                    throw new BizException(new ErrorCode(ErrorType.ArgumentErrorType, 23, "要修改的用户设置为空"));
                 }
             }
 

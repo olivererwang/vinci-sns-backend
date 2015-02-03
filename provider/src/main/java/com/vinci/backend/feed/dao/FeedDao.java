@@ -36,10 +36,10 @@ public class FeedDao {
      */
     public FeedModel insertFeed(final FeedModel feedModel) {
         if (feedModel == null) {
-            throw new BizException(FEED_ERROR_FEED_NULL);
+            throw new BizException(ERROR_FEED_NULL);
         }
         if (StringUtils.isEmpty(feedModel.getContent()) || StringUtils.isEmpty(feedModel.getFeedType())) {
-            throw new BizException(FEED_ERROR_FEED_CONTENT_NULL);
+            throw new BizException(ERROR_FEED_CONTENT_NULL);
         }
         try {
             GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
@@ -61,12 +61,12 @@ public class FeedDao {
                 }
             }, keyHolder);
             if (rowCount != 1 || keyHolder.getKey() == null || keyHolder.getKey().longValue() <= 0L) {
-                throw new BizException(FEED_ERROR_UNKNOWN_ERROR);
+                throw new BizException(ERROR_UNKNOWN_ERROR);
             }
             feedModel.setId(keyHolder.getKey().longValue());
             return feedModel;
         } catch (DataAccessException e) {
-            throw new BizException(e, FEED_ERROR_DATABASE_ERROR);
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
@@ -75,7 +75,7 @@ public class FeedDao {
      */
     public List<FeedModel> getUserFeed(final long userId, final long lastId, final int length) {
         if (userId < 0) {
-            throw new BizException(FEED_ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_USERID_IS_NEGATIVE);
         }
         try {
 
@@ -111,7 +111,7 @@ public class FeedDao {
                 }
             }, userId);
         } catch (DataAccessException e) {
-            throw new BizException(e, RELATION_ERROR_DATABASE_FAILED);
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
@@ -148,7 +148,7 @@ public class FeedDao {
                 }
             });
         } catch (DataAccessException e) {
-            throw new BizException(e, RELATION_ERROR_DATABASE_FAILED);
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 }

@@ -3,7 +3,6 @@ package com.vinci.backend.util;
 import com.vinci.common.base.exception.BizException;
 import com.vinci.common.base.exception.ErrorCode;
 import com.vinci.common.base.exception.ErrorType;
-import com.vinci.common.base.exception.ModelType;
 import com.vinci.common.base.monitor.QMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +12,10 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class BizTemplate<T> {
     protected String monitorKey;
-    protected ModelType type;
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected BizTemplate(ModelType type, String monitorKey) {
+    protected BizTemplate(String monitorKey) {
         this.monitorKey = monitorKey;
-        this.type = type;
     }
 
     protected abstract void checkParams() throws BizException;
@@ -42,7 +39,7 @@ public abstract class BizTemplate<T> {
             throw e;
         } catch (Throwable e) {
             recordInvalidParam(e);
-            throw new BizException(e, new ErrorCode(type, ErrorType.ArgumentErrorType, 0, e.getMessage()));
+            throw new BizException(e, new ErrorCode(ErrorType.ArgumentErrorType, 0, e.getMessage()));
         }
 
         long start = System.currentTimeMillis();
@@ -55,7 +52,7 @@ public abstract class BizTemplate<T> {
             onError(e);
             ErrorCode code = e.getErrorCode();
             if (code == null) {
-                code = new ErrorCode(type, ErrorType.unknowErrorType, 0, e.getMessage());
+                code = new ErrorCode(ErrorType.unknownErrorType, 0, e.getMessage());
             }
             QMonitor.recordOne(monitorKey + "_BizException");
             QMonitor.recordOne(monitorKey + "_Failed");
@@ -76,7 +73,7 @@ public abstract class BizTemplate<T> {
             QMonitor.recordOne(monitorKey + "_Failed");
             QMonitor.recordOne(monitorKey + "_CriticalError");
             QMonitor.recordOne("BizTemplate_UnknownError");
-            throw new BizException(e, new ErrorCode(type, ErrorType.unknowErrorType, 0, e.getMessage()));
+            throw new BizException(e, new ErrorCode(ErrorType.unknownErrorType, 0, e.getMessage()));
 
         } finally {
             afterProcess();

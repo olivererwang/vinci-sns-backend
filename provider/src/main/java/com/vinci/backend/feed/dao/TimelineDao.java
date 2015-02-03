@@ -34,12 +34,12 @@ public class TimelineDao {
     /**
      * 插入一个feed
      */
-    public void insertFeed(final FeedModel feedModel , final List<Long> users) {
+    public void insertSomeonesTimeline(final FeedModel feedModel , final List<Long> users) {
         if (feedModel == null) {
-            throw new BizException(FEED_ERROR_FEED_NULL);
+            throw new BizException(ERROR_FEED_NULL);
         }
         if (StringUtils.isEmpty(feedModel.getContent()) || StringUtils.isEmpty(feedModel.getFeedType())) {
-            throw new BizException(FEED_ERROR_FEED_CONTENT_NULL);
+            throw new BizException(ERROR_FEED_CONTENT_NULL);
         }
         if (users == null || users.size() == 0) {
             logger.warn("要插入一个users列表为空的feed");
@@ -56,7 +56,7 @@ public class TimelineDao {
             sql.append(Joiner.on(',').skipNulls().join(params));
             jdbcTemplate.update(sql.toString());
         } catch (DataAccessException e) {
-            throw new BizException(e, FEED_ERROR_DATABASE_ERROR);
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
@@ -65,7 +65,7 @@ public class TimelineDao {
      */
     public List<TimelineModel> getFeedTimeline(final long userId, final long lastId, final int length) {
         if (userId < 0) {
-            throw new BizException(FEED_ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_USERID_IS_NEGATIVE);
         }
         try {
 
@@ -99,7 +99,7 @@ public class TimelineDao {
                 }
             }, userId);
         } catch (DataAccessException e) {
-            throw new BizException(e, FEED_ERROR_DATABASE_ERROR);
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 }

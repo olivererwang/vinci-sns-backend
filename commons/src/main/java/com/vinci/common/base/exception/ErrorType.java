@@ -6,12 +6,12 @@ package com.vinci.common.base.exception;
  */
 public enum ErrorType {
     /** 参数错误 **/
-    ArgumentErrorType(0010000),
+    ArgumentErrorType(1010000),
     /** 数据库相关错误 **/
-    databaseErrorType(0020000),
+    databaseErrorType(1020000),
     /** 数据约束(冲突)相关错误，例如唯一索引约束等**/
-    dataConventionErrorType(0030000),
-    unknowErrorType(9990000);
+    dataConventionErrorType(1030000),
+    unknownErrorType(9990000);
 
     private final int typeCode;
 

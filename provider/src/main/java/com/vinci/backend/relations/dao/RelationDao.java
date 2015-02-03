@@ -27,49 +27,49 @@ public class RelationDao {
 
     public void createRelation(final long sourceId, final List<Long> dstIds) {
         if (sourceId < 0) {
-            throw new BizException(RELATION_ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_USERID_IS_NEGATIVE);
         }
         if (dstIds == null || dstIds.size() == 0) {
-            throw new BizException(RELATION_ERROR_FOLLOWER_ID_IS_NEGATIVE);
+            throw new BizException(ERROR_FOLLOWER_ID_IS_NEGATIVE);
         }
         String sql = "insert into " + RELATION_DATABASE_NAME + ".relation (source_user,dst_user) values ";
         List<String> insertValues = Lists.newArrayListWithCapacity(dstIds.size());
         for (long id : dstIds) {
             if (id <= 0) {
-                throw new BizException(RELATION_ERROR_FOLLOWER_ID_IS_NEGATIVE);
+                throw new BizException(ERROR_FOLLOWER_ID_IS_NEGATIVE);
             }
             insertValues.add("(" + sourceId + "," + id + ")");
         }
         try {
             jdbcTemplate.update(sql + Joiner.on(',').join(insertValues));
         } catch (DuplicateKeyException e) {
-            throw new BizException(e, RELATION_ERROR_HAS_ATTENTION);
+            throw new BizException(e, ERROR_HAS_ATTENTION);
         } catch (DataAccessException e) {
-            throw new BizException(e, RELATION_ERROR_DATABASE_FAILED);
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
     public int getAttentionCount(final long sourceId) {
         if (sourceId <= 0) {
-            throw new BizException(RELATION_ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_USERID_IS_NEGATIVE);
         }
         try {
             return jdbcTemplate.queryForObject("SELECT count(*) FROM " + RELATION_DATABASE_NAME + ".relation WHERE source_user=?"
                     , Integer.class, sourceId);
         } catch (DataAccessException e) {
-            throw new BizException(e, RELATION_ERROR_DATABASE_FAILED);
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
     public int getFollowerCount(final long dstId) {
         if (dstId <= 0) {
-            throw new BizException(RELATION_ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_USERID_IS_NEGATIVE);
         }
         try {
             return jdbcTemplate.queryForObject("SELECT count(*) FROM " + RELATION_DATABASE_NAME + ".relation WHERE dst_user=?"
                     , Integer.class, dstId);
         } catch (DataAccessException e) {
-            throw new BizException(e, RELATION_ERROR_DATABASE_FAILED);
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
@@ -80,7 +80,7 @@ public class RelationDao {
      */
     public List<Attention> getAttentions(final long userId, final long lastId, final int length, final boolean isGetAttentions) {
         if (userId < 0) {
-            throw new BizException(RELATION_ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_USERID_IS_NEGATIVE);
         }
         try {
 
@@ -112,7 +112,7 @@ public class RelationDao {
                 }
             }, userId);
         } catch (DataAccessException e) {
-            throw new BizException(e, RELATION_ERROR_DATABASE_FAILED);
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 
@@ -121,7 +121,7 @@ public class RelationDao {
      */
     public boolean isAttention(long sourceId, long dstId) {
         if (sourceId <= 0 || dstId <= 0) {
-            throw new BizException(RELATION_ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_USERID_IS_NEGATIVE);
         }
         try {
 
@@ -133,7 +133,7 @@ public class RelationDao {
                         }
                     }, sourceId, dstId);
         } catch (DataAccessException e) {
-            throw new BizException(e, RELATION_ERROR_DATABASE_FAILED);
+            throw new BizException(e, ERROR_DATABASE_FAILED);
         }
     }
 }
