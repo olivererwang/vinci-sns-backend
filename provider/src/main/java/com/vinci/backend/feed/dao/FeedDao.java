@@ -100,7 +100,7 @@ public class FeedDao {
                         feed.setUserid(userId);
                         feed.setContent(rs.getString("content"));
                         feed.setFeedType(rs.getString("feed_type"));
-                        feed.setCreateDate(rs.getDate("create_date"));
+                        feed.setCreateDate(rs.getTimestamp("create_date"));
                         long refFeedId = rs.getLong("ref_feed_id");
                         if (refFeedId > 0) {
                             feed.setRefFeed(new FeedModel());
@@ -138,7 +138,7 @@ public class FeedDao {
                         feed.setUserid(rs.getLong("userid"));
                         feed.setContent(rs.getString("content"));
                         feed.setFeedType(rs.getString("feed_type"));
-                        feed.setCreateDate(rs.getDate("create_date"));
+                        feed.setCreateDate(rs.getTimestamp("create_date"));
                         long refFeedId = rs.getLong("ref_feed_id");
                         if (refFeedId > 0) {
                             feed.setRefFeed(new FeedModel(refFeedId));

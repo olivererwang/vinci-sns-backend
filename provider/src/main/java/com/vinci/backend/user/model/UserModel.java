@@ -25,6 +25,13 @@ public class UserModel implements Serializable{
     private Date createDate;
     private Date updateTime;
 
+    public UserModel() {
+    }
+
+    public UserModel(long id, String nickName) {
+        this.id = id;
+        this.nickName = nickName;
+    }
     //下面的是数据库extra内容
 
     public static class UserSettings implements Serializable{

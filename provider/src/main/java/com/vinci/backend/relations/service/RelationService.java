@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.vinci.backend.Constants.*;
@@ -31,35 +32,35 @@ public class RelationService {
     /**
      * 创建
      */
-    public List<UserModel> createAttention(final UserModel source , final List<Long> dstUserIds) {
+    public List<UserModel> createAttention(final UserModel source, final List<UserModel> dstUsers) {
         return new BizTemplate<List<UserModel>>("createAttention") {
             @Override
             protected void checkParams() throws BizException {
                 if (source == null) {
                     throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
                 }
-                if (dstUserIds == null || dstUserIds.size() == 0) {
+                if (dstUsers == null || dstUsers.size() == 0) {
                     throw new BizException(ERROR_FOLLOWER_ID_LENGTH_IS_NULL);
                 }
-                if (dstUserIds.size() > MAX_FOLLOW_LENGTH_ONCE) {
+                if (dstUsers.size() > MAX_FOLLOW_LENGTH_ONCE) {
                     throw new BizException(ERROR_FOLLOWER_ID_LENGTH_TOO_MANY);
                 }
             }
 
             @Override
             protected List<UserModel> process() throws Exception {
-                List<UserModel> users = userService.getUserByUserID(dstUserIds);
-                if (users == null || users.size() == 0) {
-                    throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
-                }
-                List<Long> dstUserIds = Lists.newArrayListWithCapacity(users.size());
-                for (UserModel user : users) {
-                    if (user != null) {
+                List<Long> dstUserIds = Lists.newArrayListWithCapacity(dstUsers.size());
+                Iterator<UserModel> iter = dstUsers.iterator();
+                while (iter.hasNext()) {
+                    UserModel user = iter.next();
+                    if (user == null || user.getId() <= 0) {
+                        iter.remove();
+                    } else {
                         dstUserIds.add(user.getId());
                     }
                 }
                 relationDao.createRelation(source.getId(),dstUserIds);
-                return users;
+                return dstUsers;
             }
         }.execute();
     }

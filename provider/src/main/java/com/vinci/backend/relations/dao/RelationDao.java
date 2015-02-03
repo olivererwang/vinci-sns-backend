@@ -84,7 +84,7 @@ public class RelationDao {
         }
         try {
 
-            StringBuilder sql = new StringBuilder("select id,").append(isGetAttentions ? "dst_user" : "source_user")
+            StringBuilder sql = new StringBuilder("select id,create_date,").append(isGetAttentions ? "dst_user" : "source_user")
                     .append(" as userid from ").append(RELATION_DATABASE_NAME).append(".relation")
                     .append(" use index (`").append(isGetAttentions?"idx_source_user":"idx_dst_user").append("`)")
                     .append(" where ").append(isGetAttentions ? "source_user" : "dst_user").append("=?");
@@ -109,7 +109,7 @@ public class RelationDao {
                             attention.setDstUserId(userId);
                         }
                         attention.setId(rs.getLong("id"));
-                        attention.setCreateDate(rs.getDate("create_date"));
+                        attention.setCreateDate(rs.getTimestamp("create_date"));
                         result.add(attention);
                     }
                     return result;

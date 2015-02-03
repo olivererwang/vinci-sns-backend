@@ -87,7 +87,7 @@ public class TimelineDao {
                         TimelineModel model = new TimelineModel();
                         model.setId(rs.getLong("id"));
                         model.setUserid(userId);
-                        model.setCreateDate(rs.getDate("create_date"));
+                        model.setCreateDate(rs.getTimestamp("create_date"));
                         model.setFeed(rs.getLong("feed_id"));
                         model.setRefFeed(rs.getLong("ref_feed_id"));
                         result.add(model);
