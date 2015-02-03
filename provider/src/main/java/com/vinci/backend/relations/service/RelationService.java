@@ -36,7 +36,7 @@ public class RelationService {
             @Override
             protected void checkParams() throws BizException {
                 if (source == null) {
-                    throw new BizException(ERROR_USERID_IS_NEGATIVE);
+                    throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
                 }
                 if (dstUserIds == null || dstUserIds.size() == 0) {
                     throw new BizException(ERROR_FOLLOWER_ID_LENGTH_IS_NULL);
@@ -50,7 +50,7 @@ public class RelationService {
             protected List<UserModel> process() throws Exception {
                 List<UserModel> users = userService.getUserByUserID(dstUserIds);
                 if (users == null || users.size() == 0) {
-                    throw new BizException(ERROR_USERID_IS_NEGATIVE);
+                    throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
                 }
                 List<Long> dstUserIds = Lists.newArrayListWithCapacity(users.size());
                 for (UserModel user : users) {
@@ -73,7 +73,7 @@ public class RelationService {
             @Override
             protected void checkParams() throws BizException {
                 if (source == null) {
-                    throw new BizException(ERROR_USERID_IS_NEGATIVE);
+                    throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
                 }
             }
 
@@ -93,7 +93,7 @@ public class RelationService {
             @Override
             protected void checkParams() throws BizException {
                 if (source == null) {
-                    throw new BizException(ERROR_USERID_IS_NEGATIVE);
+                    throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
                 }
                 if (dstId <= 0) {
                     throw new BizException(ERROR_FOLLOWER_ID_LENGTH_IS_NULL);

@@ -17,7 +17,7 @@ public class Constants {
     public static final ErrorCode ERROR_DATABASE_FAILED = new ErrorCode(ErrorType.databaseErrorType, 1, "数据库错误");
     public static final ErrorCode ERROR_UNKNOWN_ERROR = new ErrorCode(ErrorType.unknownErrorType, 1, "未知错误");
 
-    public static final ErrorCode ERROR_USERID_IS_NEGATIVE = new ErrorCode(ErrorType.ArgumentErrorType, 1, "关注人为空或不存在");
+    public static final ErrorCode ERROR_ATTENTION_USERID_IS_NEGATIVE = new ErrorCode(ErrorType.ArgumentErrorType, 1, "关注人为空或不存在");
     public static final ErrorCode ERROR_FOLLOWER_ID_IS_NEGATIVE = new ErrorCode(ErrorType.ArgumentErrorType, 2, "被关注人id不存在");
     public static final ErrorCode ERROR_FOLLOWER_ID_LENGTH_IS_NULL = new ErrorCode(ErrorType.ArgumentErrorType, 3, "没有选择关注人");
     public static final ErrorCode ERROR_FOLLOWER_ID_LENGTH_TOO_MANY = new ErrorCode(ErrorType.ArgumentErrorType, 4, "要关注的人不能超过" + MAX_FOLLOW_LENGTH_ONCE);
@@ -28,7 +28,7 @@ public class Constants {
     public static final ErrorCode ERROR_IMEI_IS_EMPTY = new ErrorCode(ErrorType.ArgumentErrorType, 11, "IMEI号为空");
     public static final ErrorCode ERROR_MAC_ADDR_IS_EMPTY = new ErrorCode(ErrorType.ArgumentErrorType, 12, "MAC地址为空");
     public static final ErrorCode ERROR_DEVICE_ID_INVALID = new ErrorCode(ErrorType.ArgumentErrorType, 13, "要插入的设备号有误");
-    public static final ErrorCode ERROR_USERID_IS_EMPTY = new ErrorCode(ErrorType.ArgumentErrorType, 14, "绑定设备参数有误，userID为空");
+    public static final ErrorCode ERROR_USERID_IS_EMPTY = new ErrorCode(ErrorType.ArgumentErrorType, 14, "userID为空");
     public static final ErrorCode ERROR_USER_IS_NOT_EXIST = new ErrorCode(ErrorType.dataConventionErrorType, 16, "用户不存在");
     public static final ErrorCode ERROR_NICKNAME_IS_EMPTY = new ErrorCode(ErrorType.ArgumentErrorType, 17, "昵称为空");
     public static final ErrorCode ERROR_USER_SETTINGS_IS_EMPTY = new ErrorCode(ErrorType.ArgumentErrorType, 18, "要修改的用户设置为空");

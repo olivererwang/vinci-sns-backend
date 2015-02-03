@@ -27,7 +27,7 @@ public class RelationDao {
 
     public void createRelation(final long sourceId, final List<Long> dstIds) {
         if (sourceId < 0) {
-            throw new BizException(ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
         }
         if (dstIds == null || dstIds.size() == 0) {
             throw new BizException(ERROR_FOLLOWER_ID_IS_NEGATIVE);
@@ -51,7 +51,7 @@ public class RelationDao {
 
     public int getAttentionCount(final long sourceId) {
         if (sourceId <= 0) {
-            throw new BizException(ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
         }
         try {
             return jdbcTemplate.queryForObject("SELECT count(*) FROM " + RELATION_DATABASE_NAME + ".relation WHERE source_user=?"
@@ -63,7 +63,7 @@ public class RelationDao {
 
     public int getFollowerCount(final long dstId) {
         if (dstId <= 0) {
-            throw new BizException(ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
         }
         try {
             return jdbcTemplate.queryForObject("SELECT count(*) FROM " + RELATION_DATABASE_NAME + ".relation WHERE dst_user=?"
@@ -80,7 +80,7 @@ public class RelationDao {
      */
     public List<Attention> getAttentions(final long userId, final long lastId, final int length, final boolean isGetAttentions) {
         if (userId < 0) {
-            throw new BizException(ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
         }
         try {
 
@@ -101,10 +101,14 @@ public class RelationDao {
                     List<Attention> result = Lists.newArrayListWithCapacity(length);
                     while (rs.next()) {
                         Attention attention = new Attention();
-                        attention.setAttention(isGetAttentions);
-                        attention.setSourceUserId(userId);
+                        if (isGetAttentions) {
+                            attention.setSourceUserId(userId);
+                            attention.setDstUserId(rs.getLong("userid"));
+                        } else {
+                            attention.setSourceUserId(rs.getLong("userid"));
+                            attention.setDstUserId(userId);
+                        }
                         attention.setId(rs.getLong("id"));
-                        attention.setDstUserId(rs.getLong("dst_user"));
                         attention.setCreateDate(rs.getDate("create_date"));
                         result.add(attention);
                     }
@@ -121,7 +125,7 @@ public class RelationDao {
      */
     public boolean isAttention(long sourceId, long dstId) {
         if (sourceId <= 0 || dstId <= 0) {
-            throw new BizException(ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
         }
         try {
 

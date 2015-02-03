@@ -15,10 +15,10 @@ public class TimelineModel implements Serializable{
     private long userid;
 
     /** 实际内容 **/
-    private FeedModel feed;
+    private long feed;
 
     /** 引用的feed id**/
-    private FeedModel refFeed;
+    private long refFeed;
 
     /** 发表时间 **/
     private Date createDate;
@@ -39,19 +39,19 @@ public class TimelineModel implements Serializable{
         this.userid = userid;
     }
 
-    public FeedModel getFeed() {
+    public long getFeed() {
         return feed;
     }
 
-    public void setFeed(FeedModel feed) {
+    public void setFeed(long feed) {
         this.feed = feed;
     }
 
-    public FeedModel getRefFeed() {
+    public long getRefFeed() {
         return refFeed;
     }
 
-    public void setRefFeed(FeedModel refFeed) {
+    public void setRefFeed(long refFeed) {
         this.refFeed = refFeed;
     }
 

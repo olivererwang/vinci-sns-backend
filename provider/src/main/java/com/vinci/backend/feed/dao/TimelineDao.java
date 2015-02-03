@@ -50,7 +50,7 @@ public class TimelineDao {
             List<String> params = Lists.newArrayListWithCapacity(users.size());
             for (Long user : users) {
                 if (user != null) {
-                    params.add("("+feedModel.getUserid()+","+feedModel.getId()+","+(feedModel.getRefFeed()==null?"0":feedModel.getRefFeed().getId())+")");
+                    params.add("(" + user + "," + feedModel.getId() + "," + (feedModel.getRefFeed() == null ? "0" : feedModel.getRefFeed().getId()) + ")");
                 }
             }
             sql.append(Joiner.on(',').skipNulls().join(params));
@@ -61,11 +61,11 @@ public class TimelineDao {
     }
 
     /**
-     * 获取一个人发的feed
+     * 获取一个人的timeline
      */
     public List<TimelineModel> getFeedTimeline(final long userId, final long lastId, final int length) {
         if (userId < 0) {
-            throw new BizException(ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
         }
         try {
 
@@ -88,11 +88,8 @@ public class TimelineDao {
                         model.setId(rs.getLong("id"));
                         model.setUserid(userId);
                         model.setCreateDate(rs.getDate("create_date"));
-                        model.setFeed(new FeedModel(rs.getLong("feed_id")));
-                        long refFeedId = rs.getLong("ref_feed_id");
-                        if (refFeedId > 0) {
-                            model.setRefFeed(new FeedModel(refFeedId));
-                        }
+                        model.setFeed(rs.getLong("feed_id"));
+                        model.setRefFeed(rs.getLong("ref_feed_id"));
                         result.add(model);
                     }
                     return result;

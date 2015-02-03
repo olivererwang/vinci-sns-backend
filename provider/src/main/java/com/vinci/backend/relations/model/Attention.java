@@ -13,16 +13,6 @@ public class Attention implements Serializable{
     public Attention() {
     }
 
-    public Attention(boolean isAttention) {
-        this.isAttention = isAttention;
-    }
-
-    /**
-     * true： 关注
-     * false： 粉丝
-     */
-    private boolean isAttention = true;
-
     private long id;
 
     private long sourceUserId;
@@ -30,14 +20,6 @@ public class Attention implements Serializable{
     private long dstUserId;
 
     private Date createDate;
-
-    public boolean isAttention() {
-        return isAttention;
-    }
-
-    public void setAttention(boolean isAttention) {
-        this.isAttention = isAttention;
-    }
 
     public long getId() {
         return id;
@@ -74,7 +56,6 @@ public class Attention implements Serializable{
     @Override
     public String toString() {
         return "Attention{" +
-                "isAttention=" + isAttention +
                 ", id=" + id +
                 ", sourceUserId=" + sourceUserId +
                 ", dstUserId=" + dstUserId +

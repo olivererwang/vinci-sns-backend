@@ -18,6 +18,7 @@ import java.sql.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.vinci.backend.Constants.*;
 
@@ -75,7 +76,7 @@ public class FeedDao {
      */
     public List<FeedModel> getUserFeed(final long userId, final long lastId, final int length) {
         if (userId < 0) {
-            throw new BizException(ERROR_USERID_IS_NEGATIVE);
+            throw new BizException(ERROR_ATTENTION_USERID_IS_NEGATIVE);
         }
         try {
 
@@ -118,7 +119,7 @@ public class FeedDao {
     /**
      * 通过feed id获取feed内容
      */
-    public Map<Long, FeedModel> getFeedById(final List<Long> feedIds) {
+    public Map<Long, FeedModel> getFeedById(final Set<Long> feedIds) {
         if (feedIds == null || feedIds.size() == 0) {
             return Collections.emptyMap();
         }
