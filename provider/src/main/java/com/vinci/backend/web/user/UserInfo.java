@@ -1,4 +1,6 @@
-package com.vinci.common.base.user;
+package com.vinci.backend.web.user;
+
+import com.vinci.backend.user.model.UserModel;
 
 import java.io.Serializable;
 
@@ -23,6 +25,8 @@ public class UserInfo implements Serializable{
     private String oauthUserName;
     //authToken
     private String authToken;
+
+    private UserModel user;
 
     /**是否是系统用户，如果是则跳过用户权限校验*/
     private boolean system;
@@ -95,6 +99,14 @@ public class UserInfo implements Serializable{
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 
     public static UserInfo systemUserInfo(){

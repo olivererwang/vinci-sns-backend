@@ -1,4 +1,4 @@
-package com.vinci.common.base.user;
+package com.vinci.backend.web.user;
 
 /**
  * 用户上下文，使用ThreadLocal存储从UserInfoFilter中获取到的UserInfo对象

@@ -1,13 +1,16 @@
 package com.vinci.backend.web.filter;
 
+import com.vinci.backend.user.model.UserModel;
+import com.vinci.backend.user.service.UserService;
+import com.vinci.backend.web.user.UserContext;
+import com.vinci.backend.web.user.UserInfo;
 import com.vinci.common.base.monitor.QMonitor;
-import com.vinci.common.base.user.UserContext;
-import com.vinci.common.base.user.UserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -20,39 +23,58 @@ import java.io.IOException;
  */
 public class UserInfoFilter extends OncePerRequestFilter {
     private static final Logger LOG = LoggerFactory.getLogger(UserInfoFilter.class);
+
+    @Resource
+    private UserService userService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
-        try{
+        try {
             long startOfUserInfo = System.currentTimeMillis();
             UserInfo userInfo = parseUserInfo(httpServletRequest);
             UserContext.setUserInfo(userInfo);
             QMonitor.recordOne("UserInfoFilter_parseUserInfo_Success", System.currentTimeMillis() - startOfUserInfo);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOG.warn("UserInfoFilter parseUserInfo error", e);
             QMonitor.recordOne("UserInfoFilter_parseUserInfo_Failed");
             UserContext.setUserInfo(null);
             throw new RuntimeException(e);
         }
 
-        try{
+        try {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOG.warn("UserInfoFilter doFilter error", e);
             QMonitor.recordOne("UserInfoFilter_doFilter_Failed");
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             UserContext.setUserInfo(null);
         }
     }
 
     private UserInfo parseUserInfo(HttpServletRequest httpServletRequest) {
+        long userid = 0L;
+        UserModel user = null;
+        try {
+            String strUserid = findCookieByName(httpServletRequest, "userid");
+            if (!StringUtils.isEmpty(strUserid)) {
+                userid = Long.parseLong(strUserid);
+            }
+            if (userid > 0) {
+                user = userService.getUserByUserID(userid);
+            }
+        } catch (NumberFormatException e) {
+            //ignore
+        } catch (Exception e) {
+            logger.warn("检查登录失败，请检查：", e);
+        }
         UserInfo userInfo = new UserInfo();
-        userInfo.setUserId(12345L);
-        userInfo.setUserName("测试");
-        userInfo.setDeviceId("123-cddd22-243");
+        userInfo.setUserId(userid);
+        userInfo.setDeviceId(findCookieByName(httpServletRequest, "imei"));
+        userInfo.setUserName(user == null ? "" : user.getNickName());
         userInfo.setUserIp(getUserIp(httpServletRequest));
-        userInfo.setVid("1.0-alpha");
+        userInfo.setVid(findCookieByName(httpServletRequest, "appVersion"));
         return userInfo;
     }
 
@@ -88,7 +110,7 @@ public class UserInfoFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private void validateUserInfo(UserInfo userInfo){
+    private void validateUserInfo(UserInfo userInfo) {
     }
 
 

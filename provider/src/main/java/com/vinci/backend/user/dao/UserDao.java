@@ -55,9 +55,6 @@ public class UserDao {
                             return null;
                         }
                     }, userId);
-            if (info == null) {
-                throw new BizException(ERROR_USER_IS_NOT_EXIST);
-            }
             return info;
         } catch (DataAccessException e) {
             throw new BizException(e, ERROR_DATABASE_FAILED);
