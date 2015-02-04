@@ -36,7 +36,7 @@ public class UserDao {
 
     public UserModel getUser(long userId) {
         try {
-            UserModel info = jdbcTemplate.query("SELECT id,userid,device_imei,nick_name,version,extra,create_date,update_time FROM " + USER_DATABASE_NAME + ".user WHERE userid=?",
+            UserModel info = jdbcTemplate.query("SELECT id,device_imei,nick_name,version,extra,create_date,update_time FROM " + USER_DATABASE_NAME + ".user WHERE id=?",
                     new ResultSetExtractor<UserModel>() {
                         @Override
                         public UserModel extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -68,8 +68,8 @@ public class UserDao {
             return Collections.emptyMap();
         }
         try {
-            Map<Long, UserModel> info = jdbcTemplate.query("SELECT id,userid,device_imei,nick_name,version,extra,create_date,update_time FROM "
-                            + USER_DATABASE_NAME + ".user WHERE userid in ("+ Joiner.on(',').skipNulls().join(users)+")",
+            Map<Long, UserModel> info = jdbcTemplate.query("SELECT id,device_imei,nick_name,version,extra,create_date,update_time FROM "
+                            + USER_DATABASE_NAME + ".user WHERE id in (" + Joiner.on(',').skipNulls().join(users) + ")",
                     new ResultSetExtractor<Map<Long, UserModel>>() {
                         @Override
                         public Map<Long, UserModel> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -105,7 +105,7 @@ public class UserDao {
             throw new BizException(ERROR_NICKNAME_IS_EMPTY);
         }
         try {
-            int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET nick_name=? WHERE userid=?",
+            int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET nick_name=? WHERE id=?",
                     nickName,userId);
             if (rowCount == 0) {
                 throw new BizException(ERROR_USER_IS_NOT_EXIST);
@@ -119,7 +119,7 @@ public class UserDao {
 
     public void changeUserDevice(long userId, String deviceIMEI) {
         try {
-            int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET device_imei=? WHERE userid=?",
+            int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET device_imei=? WHERE id=?",
                     deviceIMEI,userId);
             if (rowCount == 0) {
                 throw new BizException(ERROR_USER_IS_NOT_EXIST);
@@ -134,7 +134,7 @@ public class UserDao {
             throw new BizException(ERROR_USER_SETTINGS_IS_EMPTY);
         }
         try {
-            int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET extra=?,version=version+1 WHERE userid=? and version=?",
+            int rowCount = jdbcTemplate.update("UPDATE " + USER_DATABASE_NAME + ".user SET extra=?,version=version+1 WHERE id=? AND version=?",
                     userSettings.toString(),userId,version);
             if (rowCount == 0) {
                 throw new BizException(ERROR_USER_SETTINGS_UPDATE_CONFLICT);
