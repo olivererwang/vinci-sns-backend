@@ -11,7 +11,10 @@ CREATE TABLE `origin_feed` (
   `create_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   INDEX `idx_user` (`userid`,`id` desc)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分享内容表';
+)
+  ENGINE =InnoDB
+  DEFAULT CHARSET =utf8mb4
+  COMMENT ='分享内容表';
 
 DROP TABLE if EXISTS feed_timeline;
 CREATE TABLE `feed_timeline` (
@@ -22,4 +25,7 @@ CREATE TABLE `feed_timeline` (
   `create_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   INDEX `idx_user` (`userid` ,`id` desc)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分享内容表';
+)
+  ENGINE =InnoDB
+  DEFAULT CHARSET =utf8mb4
+  COMMENT ='分享内容表';
