@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
@@ -50,7 +51,11 @@ public class I18NResource {
         if (rb == null) {
             rb = cache.get(Locale.SIMPLIFIED_CHINESE,type);
         }
-        return rb.getString(key);
+        try {
+            return rb.getString(key);
+        } catch (MissingResourceException e) {
+            return null;
+        }
     }
 
 }
