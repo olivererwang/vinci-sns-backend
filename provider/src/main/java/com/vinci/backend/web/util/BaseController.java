@@ -11,6 +11,7 @@ import com.vinci.common.base.i18n.MessageType;
 import com.vinci.common.base.monitor.QMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -84,6 +85,13 @@ public abstract class BaseController {
     public APIResponse<?> handleMissArgumentException(MissingServletRequestParameterException e) {
         QMonitor.recordOne("BaseController_MissArgumentException");
         return convertErrorCode(ERROR_Missing_Servlet_Request_Parameter.copy(e.getParameterName()));
+    }
+
+    @ExceptionHandler(TypeMismatchException.class)
+    @ResponseBody
+    public APIResponse<?> handleMissArgumentException(TypeMismatchException e) {
+        QMonitor.recordOne("BaseController_TypeMismatchException");
+        return convertErrorCode(ERROR_Type_Miss_Match_Servlet_Request_Parameter.copy(e.getPropertyName()));
     }
 
     protected void checkLogin() {

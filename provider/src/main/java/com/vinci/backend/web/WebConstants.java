@@ -11,6 +11,7 @@ public class WebConstants {
 
     public final static ErrorCode ERROR_UNKNOWN_ERROR = new ErrorCode(ErrorType.WebArgumentErrorType, 999, "系统繁忙，请稍后再试");
     public final static ErrorCode ERROR_Missing_Servlet_Request_Parameter = new ErrorCode(ErrorType.WebArgumentErrorType, 998, "缺少%s参数");
+    public final static ErrorCode ERROR_Type_Miss_Match_Servlet_Request_Parameter = new ErrorCode(ErrorType.WebArgumentErrorType, 997, "参数类型错误%s");
     public final static ErrorCode ERROR_DEFAULT_ARGUMENT_ERROR = new ErrorCode(ErrorType.WebArgumentErrorType, 997, "参数错误");
 
     public final static ErrorCode ERROR_NEED_LOGIN = new ErrorCode(ErrorType.WebArgumentErrorType, 1, "需要登录");
