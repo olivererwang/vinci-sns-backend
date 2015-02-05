@@ -95,7 +95,7 @@ public abstract class BaseController {
     }
 
     protected void checkLogin() {
-        if (queryUserInfo() == null) {
+        if (queryUserInfo().getUser() == null) {
             throw new BizException(ERROR_NEED_LOGIN);
         }
     }
