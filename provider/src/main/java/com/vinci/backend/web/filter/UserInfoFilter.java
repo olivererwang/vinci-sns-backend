@@ -6,6 +6,10 @@ import com.vinci.backend.domain.user.model.UserModel;
 import com.vinci.backend.domain.user.service.UserService;
 import com.vinci.backend.web.user.UserContext;
 import com.vinci.backend.web.user.UserInfo;
+import com.vinci.common.base.itsdangerouser.TimestampSigner;
+import com.vinci.common.base.itsdangerouser.exceptions.BadDataException;
+import com.vinci.common.base.itsdangerouser.exceptions.BadSignatureException;
+import com.vinci.common.base.itsdangerouser.exceptions.SignatureExpiredException;
 import com.vinci.common.base.monitor.QMonitor;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -28,7 +32,7 @@ import java.util.Set;
  */
 public class UserInfoFilter extends OncePerRequestFilter {
     private static final Logger LOG = LoggerFactory.getLogger(UserInfoFilter.class);
-
+    private static final String SECRET_KEY = "a good key baldfjflasjdlkfjaoisdujvjlkaj";
     @Resource
     private UserService userService;
 
@@ -63,20 +67,18 @@ public class UserInfoFilter extends OncePerRequestFilter {
         long userid = 0L;
         UserModel user = null;
         try {
-            String strUserid = findCookieByName(httpServletRequest, "userid");
-            if (!StringUtils.isEmpty(strUserid)) {
-                userid = Long.parseLong(strUserid);
-            }
+            String strUserid = findCookieByName(httpServletRequest, "user_id");
+            String token = findCookieByName(httpServletRequest, "token");
+            userid = validateUserInfo(strUserid, token);
             if (userid > 0) {
                 user = userService.getUserByUserID(userid);
             }
-        } catch (NumberFormatException e) {
-            //ignore
         } catch (Exception e) {
             logger.warn("检查登录失败，请检查：", e);
         }
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(userid);
+        userInfo.setUser(user);
         userInfo.setDeviceId(findCookieByName(httpServletRequest, "imei"));
         userInfo.setUserName(user == null ? "" : user.getNickName());
         userInfo.setUserIp(getUserIp(httpServletRequest));
@@ -128,7 +130,18 @@ public class UserInfoFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private void validateUserInfo(UserInfo userInfo) {
+    private long validateUserInfo(String userId, String token) {
+        TimestampSigner signer = new TimestampSigner(SECRET_KEY);
+        String s = userId + "." + token;
+        try {
+            signer.unsign(s, 86400L);
+            return Long.parseLong(userId);
+        } catch (SignatureExpiredException e) {
+            //ignore
+        } catch (Exception e) {
+            //ignore
+        }
+        return 0L;
     }
 
 
