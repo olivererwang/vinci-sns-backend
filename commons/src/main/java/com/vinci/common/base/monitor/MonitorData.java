@@ -51,7 +51,7 @@ public abstract class MonitorData implements Monitor {
      * @return
      */
     public Number getPeriod(String key, int minutesOffset, int period) {
-        return QuMonitor.getPeriod(key, minutesOffset, period);
+        return VinMonitor.getPeriod(key, minutesOffset, period);
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class MonitorData implements Monitor {
      * @return
      */
     public Number getPeriodDay(String key, int dayOffset, int period) {
-        return QuMonitor.getPeriodDay((String) key, dayOffset, period);
+        return VinMonitor.getPeriodDay((String) key, dayOffset, period);
     }
 
 }

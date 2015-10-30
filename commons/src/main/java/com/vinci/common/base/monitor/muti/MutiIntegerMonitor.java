@@ -1,7 +1,7 @@
 package com.vinci.common.base.monitor.muti;
 
 import com.vinci.common.base.monitor.MonitorCounter;
-import com.vinci.common.base.monitor.QuMonitor;
+import com.vinci.common.base.monitor.VinMonitor;
 import com.vinci.common.base.monitor.exception.MonitorExistsException;
 
 /**
@@ -50,6 +50,6 @@ public class MutiIntegerMonitor extends AbstractMutiMonitor {
 
     @Override
     protected MonitorCounter createMonitorCounter(String instanceName, String description) {
-        return QuMonitor.createAtomicIntegerCounter(instanceName, description);
+        return VinMonitor.createAtomicIntegerCounter(instanceName, description);
     }
 }

@@ -27,8 +27,8 @@ import com.vinci.common.base.monitor.exception.MonitorExistsException;
  * 
  * @author sunli
  */
-public class QuMonitor {
-    private static final Logger logger = LoggerFactory.getLogger(QuMonitor.class);
+public class VinMonitor {
+    private static final Logger logger = LoggerFactory.getLogger(VinMonitor.class);
     /**
      * 存储所有的监控实例
      */
@@ -77,7 +77,7 @@ public class QuMonitor {
         });
     }
 
-    public QuMonitor() {
+    public VinMonitor() {
 
     }
 
@@ -246,7 +246,7 @@ public class QuMonitor {
      * @return
      */
     public static Map<String, Number> getMonitorData(String query) {
-        Map<String, Number> dataMap = QuMonitor.getAllCounterData(query);
+        Map<String, Number> dataMap = VinMonitor.getAllCounterData(query);
         dataMap.putAll(MapUtil.find(computerMonitors, query));
         return dataMap;
     }
@@ -261,9 +261,9 @@ public class QuMonitor {
      */
     public static Map<String, Number> getMonitorData(String query, int minutesOffset, int periodTimeMinutes,
             int dayoffset, int day) {
-        Map<String, Number> dataMap = QuMonitor.getAllCounterData(query);
-        dataMap.putAll(QuMonitor.getPeriodCounterData(query, minutesOffset, periodTimeMinutes));
-        dataMap.putAll(QuMonitor.getPeriodDayCounterData(query, day, dayoffset));
+        Map<String, Number> dataMap = VinMonitor.getAllCounterData(query);
+        dataMap.putAll(VinMonitor.getPeriodCounterData(query, minutesOffset, periodTimeMinutes));
+        dataMap.putAll(VinMonitor.getPeriodDayCounterData(query, day, dayoffset));
         dataMap.putAll(MapUtil.find(computerMonitors, query));
         return dataMap;
     }

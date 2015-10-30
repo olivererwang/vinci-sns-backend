@@ -1,7 +1,7 @@
 package com.vinci.common.base.monitor.util;
 
 import com.vinci.common.base.monitor.AtomicLongCounter;
-import com.vinci.common.base.monitor.QuMonitor;
+import com.vinci.common.base.monitor.VinMonitor;
 
 /**
  * 执行时间性能监控器
@@ -44,38 +44,38 @@ public class PerformanceMonitor {
         /**
          * 请求时间小于5ms
          */
-        SLOWREQEUSTLESS5 = QuMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS5");
-        QuMonitor.addPeriodMonitor(SLOWREQEUSTLESS5);
+        SLOWREQEUSTLESS5 = VinMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS5");
+        VinMonitor.addPeriodMonitor(SLOWREQEUSTLESS5);
         /**
          * 请求时间小于10ms
          */
-        SLOWREQEUSTLESS10 = QuMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS10");
-        QuMonitor.addPeriodMonitor(SLOWREQEUSTLESS10);
+        SLOWREQEUSTLESS10 = VinMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS10");
+        VinMonitor.addPeriodMonitor(SLOWREQEUSTLESS10);
         /**
          * 请求时间小于20毫秒
          */
-        SLOWREQEUSTLESS20 = QuMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS20");
-        QuMonitor.addPeriodMonitor(SLOWREQEUSTLESS20);
+        SLOWREQEUSTLESS20 = VinMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS20");
+        VinMonitor.addPeriodMonitor(SLOWREQEUSTLESS20);
         /**
          * 请求时间小于50毫秒
          */
-        SLOWREQEUSTLESS50 = QuMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS50");
-        QuMonitor.addPeriodMonitor(SLOWREQEUSTLESS50);
+        SLOWREQEUSTLESS50 = VinMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS50");
+        VinMonitor.addPeriodMonitor(SLOWREQEUSTLESS50);
         /**
          * 请求时间小于100毫秒
          */
-        SLOWREQEUSTLESS100 = QuMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS100");
-        QuMonitor.addPeriodMonitor(SLOWREQEUSTLESS100);
+        SLOWREQEUSTLESS100 = VinMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS100");
+        VinMonitor.addPeriodMonitor(SLOWREQEUSTLESS100);
         /**
          * 请求时间小于1秒
          */
-        SLOWREQEUSTLESS1000 = QuMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS1000");
-        QuMonitor.addPeriodMonitor(SLOWREQEUSTLESS1000);
+        SLOWREQEUSTLESS1000 = VinMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTLESS1000");
+        VinMonitor.addPeriodMonitor(SLOWREQEUSTLESS1000);
         /**
          * 请求时间大于1秒
          */
-        SLOWREQEUSTMORE1000 = QuMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTMORE1000");
-        QuMonitor.addPeriodMonitor(SLOWREQEUSTMORE1000);
+        SLOWREQEUSTMORE1000 = VinMonitor.createAtomicLongCounter(prefix + ".SLOWREQEUSTMORE1000");
+        VinMonitor.addPeriodMonitor(SLOWREQEUSTMORE1000);
     }
 
     /**

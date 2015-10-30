@@ -5,7 +5,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.vinci.common.base.monitor.MonitorCounter;
-import com.vinci.common.base.monitor.QuMonitor;
+import com.vinci.common.base.monitor.VinMonitor;
 
 /**
  * 结构：
@@ -64,7 +64,7 @@ public abstract class AbstractMutiMonitor {
                         counter = map.get(prefix + name);
                     } else {
                         if (addPeriod == true) {
-                            QuMonitor.addPeriodMonitor(counter);
+                            VinMonitor.addPeriodMonitor(counter);
                         }
                     }
                 }

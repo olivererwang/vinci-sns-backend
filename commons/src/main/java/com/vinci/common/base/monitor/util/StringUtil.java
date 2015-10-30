@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.vinci.common.base.monitor.Monitor;
-import com.vinci.common.base.monitor.QuMonitor;
+import com.vinci.common.base.monitor.VinMonitor;
 
 /**
  * @author sunli
@@ -44,9 +44,9 @@ public class StringUtil {
             sb.append("=");
             sb.append(entry.getValue());
             sb.append("\t//");
-            monitor = QuMonitor.getMonitor(entry.getKey());
+            monitor = VinMonitor.getMonitor(entry.getKey());
             if (monitor != null) {
-                sb.append((QuMonitor.getMonitor(entry.getKey()).getDescription()));
+                sb.append((VinMonitor.getMonitor(entry.getKey()).getDescription()));
             }
 
         }

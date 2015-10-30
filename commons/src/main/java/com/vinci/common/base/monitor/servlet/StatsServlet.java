@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.vinci.common.base.monitor.QuMonitor;
+import com.vinci.common.base.monitor.VinMonitor;
 import com.vinci.common.base.monitor.ThreadCpuUsageItem;
 import com.vinci.common.base.monitor.TomcatInformations;
 import com.vinci.common.base.monitor.util.RequestStats;
@@ -131,7 +131,7 @@ public class StatsServlet extends HttpServlet {
         sb.append("Your IP:" + RequestUtil.getIP(req));
         sb.append("\r\ntime:" + SystemTimer.currentTimeMillis());
         sb.append("\r\n");
-        sb.append(StringUtil.monitorMapToString(QuMonitor.getAllCounterData("GlobalPerformance.*"))
+        sb.append(StringUtil.monitorMapToString(VinMonitor.getAllCounterData("GlobalPerformance.*"))
                 .replace("=", ":"));
         sb.append("\r\nSystemLoad:" + SystemStats.getSystemLoad());
         sb.append("\r\nAvailableProcessors:" + SystemStats.getAvailableProcessors());

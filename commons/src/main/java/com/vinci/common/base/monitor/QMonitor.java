@@ -45,7 +45,7 @@ public class QMonitor {
 			.buildWithPrefix(QMONITOR_KEY_PREFIX, "QMonitor监控", true);
 	private static final int COMPUTE_PERIOD_TIME_SECONDS = 2;
 	private static long lastRunTime = 0; // 上一次运行计算定时任务的时间
-	private static final AtomicLongCounter JVM_THREAD_COUNT = QuMonitor
+	private static final AtomicLongCounter JVM_THREAD_COUNT = VinMonitor
 			.createAtomicLongCounter("JVM_Thread_Count", "线程数");
 	private static ConcurrentMap<String, MonitorItem> systemItems = new ConcurrentHashMap<String, MonitorItem>();
 	private static final ScheduledExecutorService QMonitorScheduler = Executors
@@ -208,14 +208,14 @@ public class QMonitor {
 	 */
 	private static AtomicLongCounter fetchLongMonitorByName(String name,
 			String description) {
-		AtomicLongCounter counter = (AtomicLongCounter) QuMonitor
+		AtomicLongCounter counter = (AtomicLongCounter) VinMonitor
 				.getMonitor(name);
 		if (counter == null) {
 			if (qMonitorKeyMap.putIfAbsent(name, Boolean.TRUE) == null) {
-				counter = QuMonitor.createAtomicLongCounter(name,
+				counter = VinMonitor.createAtomicLongCounter(name,
 						description);
 			} else {
-				counter = (AtomicLongCounter) QuMonitor.getMonitor(name);
+				counter = (AtomicLongCounter) VinMonitor.getMonitor(name);
 			}
 
 		}
@@ -355,7 +355,7 @@ public class QMonitor {
 		mutiLongMonitor.increment(name + INNER_COUNT_SUFFIX, (int) count);
 		if (qMonitorKeyMap.putIfAbsent(name, Boolean.TRUE) == null) {
 			// 一份中内的次数
-			QuMonitor.addComputerMonitor(name + COUNT_SUFFIX, "计数器",
+			VinMonitor.addComputerMonitor(name + COUNT_SUFFIX, "计数器",
 					new ComputerMonitor() {
 						@Override
 						public Number getValue() {
@@ -386,7 +386,7 @@ public class QMonitor {
 	private static void registerRateCalculator(final String name,
 			final String desc, final String denominatorKey,
 			final String numeratorKey,boolean isSucessRate) {
-		QuMonitor.addComputerMonitor(
+		VinMonitor.addComputerMonitor(
 				name + VALUE_SUFFIX,
 				desc,
 				new RateComputerIncrementMonitor(makeKey(QMONITOR_KEY_PREFIX,
@@ -400,7 +400,7 @@ public class QMonitor {
 		mutiLongMonitor.increment(name + INNER_TIME_SUFFIX, (int) time);
 		if (qMonitorKeyMap.putIfAbsent(name, Boolean.TRUE) == null) {
 			// 一份中内的平均时间
-			QuMonitor.addComputerMonitor(name + TIME_SUFFIX, "平均耗时",
+			VinMonitor.addComputerMonitor(name + TIME_SUFFIX, "平均耗时",
 					new ComputerMonitor() {
 						@Override
 						public Number getValue() {
@@ -418,7 +418,7 @@ public class QMonitor {
 						}
 					});
 			// 一份中内的次数
-			QuMonitor.addComputerMonitor(name + COUNT_SUFFIX, "计数器",
+			VinMonitor.addComputerMonitor(name + COUNT_SUFFIX, "计数器",
 					new ComputerMonitor() {
 						@Override
 						public Number getValue() {
@@ -460,7 +460,7 @@ public class QMonitor {
 	}
 
 	public static Map<String, Number> getValues() {
-		Map<String, Number> monitorData = QuMonitor.getMonitorData("*");
+		Map<String, Number> monitorData = VinMonitor.getMonitorData("*");
 		Iterator<Entry<String, Number>> iterator = monitorData.entrySet()
 				.iterator();
 		while (iterator.hasNext()) {

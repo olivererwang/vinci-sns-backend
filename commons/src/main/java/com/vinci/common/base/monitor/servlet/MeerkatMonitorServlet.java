@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.vinci.common.base.monitor.QuMonitor;
+import com.vinci.common.base.monitor.VinMonitor;
 import com.vinci.common.base.monitor.util.RequestUtil;
 import com.vinci.common.base.monitor.util.StringUtil;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -94,10 +94,10 @@ public class MeerkatMonitorServlet extends HttpServlet {
     public String getAllMonitorData(String query, int minutesOffset, int periodTimeMinutes, int dayoffset, int day,
             boolean description) {
         if (description) {
-            return StringUtil.monitorMapToStringWithDescription(QuMonitor.getMonitorData(query, minutesOffset,
+            return StringUtil.monitorMapToStringWithDescription(VinMonitor.getMonitorData(query, minutesOffset,
                     periodTimeMinutes, day, dayoffset));
         } else {
-            return StringUtil.monitorMapToString(QuMonitor.getMonitorData(query, minutesOffset, periodTimeMinutes,
+            return StringUtil.monitorMapToString(VinMonitor.getMonitorData(query, minutesOffset, periodTimeMinutes,
                     day, dayoffset));
         }
     }
