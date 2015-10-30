@@ -1,7 +1,3 @@
-/*
- * $Id: StatsServlet.java 9565 2012-12-05 08:03:43Z build $ Copyright (c) 2011 Qunar.com. All Rights Reserved.
- */
-
 package com.vinci.common.base.monitor.servlet;
 
 import java.io.IOException;
@@ -14,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.vinci.common.base.monitor.QunarMonitor;
+import com.vinci.common.base.monitor.QuMonitor;
 import com.vinci.common.base.monitor.ThreadCpuUsageItem;
 import com.vinci.common.base.monitor.TomcatInformations;
 import com.vinci.common.base.monitor.util.RequestStats;
@@ -117,7 +113,7 @@ public class StatsServlet extends HttpServlet {
         html.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
         html.append("<head>");
         html.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
-        html.append(" <title>【去哪儿网】酒店预订,宾馆查询,酒店点评-去哪儿网Qunar.com</title>");
+        html.append(" <title>test</title>");
         html.append("</head>");
         html.append("<body>");
         html.append("<a href=\"?action=system\">全部线程堆栈信息</a><br>\n");
@@ -135,7 +131,7 @@ public class StatsServlet extends HttpServlet {
         sb.append("Your IP:" + RequestUtil.getIP(req));
         sb.append("\r\ntime:" + SystemTimer.currentTimeMillis());
         sb.append("\r\n");
-        sb.append(StringUtil.monitorMapToString(QunarMonitor.getAllCounterData("GlobalPerformance.*"))
+        sb.append(StringUtil.monitorMapToString(QuMonitor.getAllCounterData("GlobalPerformance.*"))
                 .replace("=", ":"));
         sb.append("\r\nSystemLoad:" + SystemStats.getSystemLoad());
         sb.append("\r\nAvailableProcessors:" + SystemStats.getAvailableProcessors());

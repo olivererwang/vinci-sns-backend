@@ -1,7 +1,3 @@
-/*
- * $Id: MeerkatMonitorServlet.java 9565 2012-12-05 08:03:43Z build $ Copyright (c) 2011 Qunar.com. All Rights Reserved.
- */
-
 package com.vinci.common.base.monitor.servlet;
 
 import java.io.IOException;
@@ -11,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.vinci.common.base.monitor.QunarMonitor;
+import com.vinci.common.base.monitor.QuMonitor;
 import com.vinci.common.base.monitor.util.RequestUtil;
 import com.vinci.common.base.monitor.util.StringUtil;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -98,10 +94,10 @@ public class MeerkatMonitorServlet extends HttpServlet {
     public String getAllMonitorData(String query, int minutesOffset, int periodTimeMinutes, int dayoffset, int day,
             boolean description) {
         if (description) {
-            return StringUtil.monitorMapToStringWithDescription(QunarMonitor.getMonitorData(query, minutesOffset,
+            return StringUtil.monitorMapToStringWithDescription(QuMonitor.getMonitorData(query, minutesOffset,
                     periodTimeMinutes, day, dayoffset));
         } else {
-            return StringUtil.monitorMapToString(QunarMonitor.getMonitorData(query, minutesOffset, periodTimeMinutes,
+            return StringUtil.monitorMapToString(QuMonitor.getMonitorData(query, minutesOffset, periodTimeMinutes,
                     day, dayoffset));
         }
     }

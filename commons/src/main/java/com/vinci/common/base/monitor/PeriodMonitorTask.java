@@ -1,7 +1,3 @@
-/*
- * $Id: PeriodMonitorTask.java 9731 2012-12-19 06:06:02Z build $ Copyright (c) 2011 Qunar.com. All Rights Reserved.
- */
-
 package com.vinci.common.base.monitor;
 
 import java.util.Calendar;

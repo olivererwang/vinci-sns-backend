@@ -1,8 +1,3 @@
-/*
- * $Id: JVMMonitor.java 12721 2013-05-28 09:33:04Z build $
- *
- * Copyright (c) 2011 Qunar.com. All Rights Reserved.
- */
 
 package com.vinci.common.base.monitor;
 

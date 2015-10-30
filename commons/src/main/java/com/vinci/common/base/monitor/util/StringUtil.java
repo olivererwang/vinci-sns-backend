@@ -1,15 +1,10 @@
-/*
- * $Id: StringUtil.java 3279 2011-12-08 10:30:22Z build $
- * Copyright (c) 2011 Qunar.com. All Rights Reserved.
- */
-
 package com.vinci.common.base.monitor.util;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.vinci.common.base.monitor.Monitor;
-import com.vinci.common.base.monitor.QunarMonitor;
+import com.vinci.common.base.monitor.QuMonitor;
 
 /**
  * @author sunli
@@ -49,9 +44,9 @@ public class StringUtil {
             sb.append("=");
             sb.append(entry.getValue());
             sb.append("\t//");
-            monitor = QunarMonitor.getMonitor(entry.getKey());
+            monitor = QuMonitor.getMonitor(entry.getKey());
             if (monitor != null) {
-                sb.append((QunarMonitor.getMonitor(entry.getKey()).getDescription()));
+                sb.append((QuMonitor.getMonitor(entry.getKey()).getDescription()));
             }
 
         }

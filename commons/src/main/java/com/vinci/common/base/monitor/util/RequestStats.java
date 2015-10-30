@@ -1,8 +1,3 @@
-/*
- * $Id: RequestStats.java 3840 2012-01-17 05:56:02Z build $
- * Copyright (c) 2011 Qunar.com. All Rights Reserved.
- */
-
 package com.vinci.common.base.monitor.util;
 
 import java.util.Map.Entry;

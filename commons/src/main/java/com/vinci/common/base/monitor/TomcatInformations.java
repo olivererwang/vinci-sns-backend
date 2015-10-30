@@ -1,8 +1,3 @@
-/*
- * $Id: TomcatInformations.java 5631 2012-04-06 08:16:56Z build $
- * Copyright (c) 2011 Qunar.com. All Rights Reserved.
- */
-
 package com.vinci.common.base.monitor;
 
 import java.io.Serializable;

@@ -1,7 +1,3 @@
-/*
- * $Id: PerformanceFilter.java 9565 2012-12-05 08:03:43Z build $ Copyright (c) 2011 Qunar.com. All Rights Reserved.
- */
-
 package com.vinci.common.base.monitor.filter;
 
 import java.io.IOException;

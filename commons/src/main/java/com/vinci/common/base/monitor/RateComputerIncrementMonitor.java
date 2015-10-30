@@ -1,7 +1,3 @@
-/*
- * $Id: RateComputerIncrementMonitor.java 9790 2012-12-21 10:18:53Z build $ Copyright (c) 2011 Qunar.com. All Rights
- * Reserved.
- */
 package com.vinci.common.base.monitor;
 
 import java.math.BigDecimal;

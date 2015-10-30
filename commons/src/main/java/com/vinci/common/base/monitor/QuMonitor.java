@@ -1,7 +1,3 @@
-/*
- * $Id: QunarMonitor.java 13322 2013-06-18 10:56:31Z build $ Copyright (c) 2011 Qunar.com. All Rights Reserved.
- */
-
 package com.vinci.common.base.monitor;
 
 import java.util.HashMap;
@@ -31,8 +27,8 @@ import com.vinci.common.base.monitor.exception.MonitorExistsException;
  * 
  * @author sunli
  */
-public class QunarMonitor {
-    private static final Logger logger = LoggerFactory.getLogger(QunarMonitor.class);
+public class QuMonitor {
+    private static final Logger logger = LoggerFactory.getLogger(QuMonitor.class);
     /**
      * 存储所有的监控实例
      */
@@ -81,7 +77,7 @@ public class QunarMonitor {
         });
     }
 
-    public QunarMonitor() {
+    public QuMonitor() {
 
     }
 
@@ -159,8 +155,8 @@ public class QunarMonitor {
      * 注册一个monitor实例
      * 
      * <pre>
-     * 
-     * QunarMonitor.registerMonitor(&quot;qunar.monitorname&quot;, new Monitor() {
+     *
+     * QuMonitor.registerMonitor(&quot;monitorname&quot;, new Monitor() {
      *     public Object getValue() {
      *         return map.size();
      *     }
@@ -201,7 +197,7 @@ public class QunarMonitor {
      * <p>
      * 
      * <pre>
-     * QunarMonitor.addComputerMonitor(&quot;名称前缀.监控名称&quot;, &quot;每分钟用户订单产生数&quot;, new ComputerMonitor() {
+     * QuMonitor.addComputerMonitor(&quot;名称前缀.监控名称&quot;, &quot;每分钟用户订单产生数&quot;, new ComputerMonitor() {
      *     &#064;Override
      *     public Number getValue() {
      *         // user.orders的当前值/user.edit的当前值
@@ -250,7 +246,7 @@ public class QunarMonitor {
      * @return
      */
     public static Map<String, Number> getMonitorData(String query) {
-        Map<String, Number> dataMap = QunarMonitor.getAllCounterData(query);
+        Map<String, Number> dataMap = QuMonitor.getAllCounterData(query);
         dataMap.putAll(MapUtil.find(computerMonitors, query));
         return dataMap;
     }
@@ -265,9 +261,9 @@ public class QunarMonitor {
      */
     public static Map<String, Number> getMonitorData(String query, int minutesOffset, int periodTimeMinutes,
             int dayoffset, int day) {
-        Map<String, Number> dataMap = QunarMonitor.getAllCounterData(query);
-        dataMap.putAll(QunarMonitor.getPeriodCounterData(query, minutesOffset, periodTimeMinutes));
-        dataMap.putAll(QunarMonitor.getPeriodDayCounterData(query, day, dayoffset));
+        Map<String, Number> dataMap = QuMonitor.getAllCounterData(query);
+        dataMap.putAll(QuMonitor.getPeriodCounterData(query, minutesOffset, periodTimeMinutes));
+        dataMap.putAll(QuMonitor.getPeriodDayCounterData(query, day, dayoffset));
         dataMap.putAll(MapUtil.find(computerMonitors, query));
         return dataMap;
     }

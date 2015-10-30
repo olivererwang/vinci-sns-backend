@@ -1,8 +1,3 @@
-/*
- * $Id: AbstractQunarMutiMonitor.java 3279 2011-12-08 10:30:22Z build $
- * Copyright (c) 2011 Qunar.com. All Rights Reserved.
- */
-
 package com.vinci.common.base.monitor.muti;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,7 +5,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.vinci.common.base.monitor.MonitorCounter;
-import com.vinci.common.base.monitor.QunarMonitor;
+import com.vinci.common.base.monitor.QuMonitor;
 
 /**
  * 结构：
@@ -28,9 +23,9 @@ import com.vinci.common.base.monitor.QunarMonitor;
  * 
  * @author sunli
  */
-public abstract class AbstractQunarMutiMonitor {
+public abstract class AbstractMutiMonitor {
     protected final ConcurrentHashMap<String, MonitorCounter> map = new ConcurrentHashMap<String, MonitorCounter>();
-    protected static final ConcurrentHashMap<String, AbstractQunarMutiMonitor> instanceMap = new ConcurrentHashMap<String, AbstractQunarMutiMonitor>();
+    protected static final ConcurrentHashMap<String, AbstractMutiMonitor> instanceMap = new ConcurrentHashMap<String, AbstractMutiMonitor>();
     protected String prefix = null;
     protected boolean addPeriod = false;
     protected String description = null;
@@ -41,7 +36,7 @@ public abstract class AbstractQunarMutiMonitor {
      * @param description 描述信息
      * @param addPeriod 是否存储按时间间隔存储的
      */
-    protected AbstractQunarMutiMonitor(String prefix, String description, boolean addPeriod) {
+    protected AbstractMutiMonitor(String prefix, String description, boolean addPeriod) {
         this.prefix = prefix + '.';
         this.addPeriod = addPeriod;
         this.description = description;
@@ -69,7 +64,7 @@ public abstract class AbstractQunarMutiMonitor {
                         counter = map.get(prefix + name);
                     } else {
                         if (addPeriod == true) {
-                            QunarMonitor.addPeriodMonitor(counter);
+                            QuMonitor.addPeriodMonitor(counter);
                         }
                     }
                 }
